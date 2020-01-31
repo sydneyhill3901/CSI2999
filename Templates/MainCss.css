@@ -1,0 +1,339 @@
+/*********************************************
+GENERAL
+**********************************************/
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    background: #ededed;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    font-size: 13px;
+}
+
+h1,
+h2,
+h3 {
+    margin: 0;
+    padding: 0;
+}
+
+
+/*********************************************
+CONTAINER
+**********************************************/
+.container {
+    width: 1100px;
+    margin: 0px auto;
+}
+
+
+/*********************************************
+HEADER
+**********************************************/
+#header-wrapper {
+    overflow: hidden;
+    background: #3b3b3b;
+}
+
+#header {
+    overflow: hidden;
+    height: 150px;
+}
+
+
+/*********************************************
+LOGO
+**********************************************/
+#logo {
+    float: left;
+    width: 400;
+}
+
+#logo h1 a {
+    display: block;
+    line-height: 150px;
+    text-decoration: none;
+    font-family: 'Kavoon', cursive;
+    font-size: 40px;
+    color: #FFFFFF;
+}
+
+
+/*********************************************
+MENU
+**********************************************/
+#menu {
+    float: right;
+    width: 700px;
+}
+
+#menu ul {
+    float: right;
+    margin: 0px;
+    padding: 60px 0px 0px 0px;
+    list-style: none;
+}
+
+#menu li {
+    float: left;
+    margin-left: 10px;
+}
+
+#menu a {
+    display: block;
+    padding: 10px 20px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-family: 'Archivo Narrow', sans-serif;
+    font-size: 12px;
+    color: #FFFFFF;
+}
+
+#menu .active a {
+    background: #00d9a9;
+    border-radius: 5px;
+}
+
+#menu .active a:hover {
+    background-color: #00a987;
+}
+
+
+/*********************************************
+CONTENT WRAPPER
+**********************************************/
+#featured-wrapper {
+    overflow: hidden;
+    padding: 25px 0px;
+    text-align: center;
+}
+
+#featured header {
+    display: block;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+    font-size: 30px;
+    color: #333333;
+}
+
+
+/*********************************************
+BUTTON STYLING
+**********************************************/
+.button {
+    display: inline-block;
+    margin: 0px 10px;
+    padding: 10px 30px;
+    background: #20e1b6;
+    transition: background-color .25s ease-in-out;
+    border-radius: 5px;
+    box-shadow: 0px 0px 0px 5px rgba(255, 255, 255, 1);
+    letter-spacing: 2px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-family: 'Archivo Narrow', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #FFF;
+}
+
+.button:hover {
+    background-color: #00ad87;
+}
+
+.button-small {
+    margin: 5px 0px;
+    box-shadow: none;
+    font-size: 10px;
+    color: #FFFFFF;
+}
+
+
+/*********************************************
+CONTENT
+**********************************************/
+#content header {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 30px;
+    font-weight: 400;
+    color: #333;
+}
+
+#two-column h3 {
+    padding-bottom: 5px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#two-column img {
+    float: left;
+    clear: left;
+    margin-right: 30px;
+    padding: 5px;
+    background: #FFF;
+    opacity: 0.8;
+    transition: opacity .25s ease-in-out;
+}
+
+#two-column a:hover img {
+    opacity: 0.9;
+}
+
+two-column .box-style {
+    overflow: hidden;
+    padding: 30px 0px;
+}
+
+#two-column #tbox1 {
+    float: left;
+    width: 500px;
+}
+
+#two-column #tbox2 {
+    float: right;
+    width: 500px;
+}
+
+
+/*********************************************
+BANNER
+**********************************************/
+#banner-wrapper {
+    clear: both;
+    overflow: hidden;
+    padding: 12px 0px 1px 0px;
+    margin-top: 10px;
+    background: #20e1b6;
+    text-align: center;
+    color: #fff;
+}
+
+#banner p {
+    letter-spacing: -1px;
+    font-size: 18px;
+}
+
+
+/*********************************************
+FOOTER
+**********************************************/
+#footer-wrapper {
+    overflow: hidden;
+    padding: 35px 0px;
+    background: #444;
+}
+
+#footer {
+    overflow: hidden;
+    color: #B1B1B1;
+}
+
+#footer header {
+    margin-bottom: 2px;
+    font-size: 20px;
+    color: #FFF;
+}
+
+#footer #fbox1 {
+    float: left;
+    width: 700px;
+}
+
+#footer #fbox2 {
+    float: right;
+    width: 300px;
+}
+
+#copyright {
+    overflow: hidden;
+    padding: 3px 0px 3px 0px;
+    text-align: center;
+    color: #606060;
+}
+
+
+/*********************************************
+CARDS
+**********************************************/
+.card-list {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+    display: flex;
+}
+
+.card-list > :not(:first-child) {
+    margin-left: .5rem;
+}
+
+.card-list > :not(:last-child) {
+    margin-right: .5rem;
+}
+
+.card-list li {
+    flex: 1 1 0;
+}
+
+.card {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: #333;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: ease-in all .1s;
+    box-shadow:
+        0 1px 1px rgba(0, 0, 0, 0.1),
+        0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+        0 2px 2px rgba(0, 0, 0, 0.1),
+        0 4px 4px rgba(0, 0, 0, 0.1),
+        0 8px 8px rgba(0, 0, 0, 0.1),
+        0 16px 16px rgba(0, 0, 0, 0.1),
+        0 32px 32px rgba(0, 0, 0, 0.1);
+}
+
+.card > * {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.card > :not(.card-img-cont) {
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+.card-category {
+    font-weight: bold;
+    font-size: .8rem;
+    text-transform: uppercase;
+    margin-bottom: 0;
+    opacity: .5;
+}
+
+.card-img-cont {
+    order: -1;
+    width: 100%;
+    height: 0;
+    padding-bottom: 66%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.card-img {
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
