@@ -22,6 +22,22 @@ time.sleep(4)
 specificUrlTest("outputUrlList.txt", 104)
 
 
+# only test this using the test list
+def allUrlTest(urlListFile):
+    urlList = open(urlListFile, encoding="utf8")
+    workingUrls = open("PCmagURLs.txt", "w+", encoding="utf8")
+    for line in urlList:
+        tryUrl = line.strip()
+        response = requests.get(tryUrl)
+        if response.status_code == 200:
+            workingUrls.write(tryUrl)
+        time.sleep(4)
+
+allUrlTest("testUrlList.txt")
+
+
+
+
 
 
 
