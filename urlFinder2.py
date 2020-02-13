@@ -1,6 +1,11 @@
+import time
+
 
 # this is a stupid simple edit that works better
 # creates output list of urls to try
+# requires phone list file "phoneListUnformatted.txt" source: https://www.wirefly.com/ecommerce/phones/all
+# creates outputUrlList.txt used by urlTester
+
 def getUrl(rootUrl, wordListFile):
     wordList = open(wordListFile, encoding="utf8")
     outputUrl = open("outputUrlList.txt", "w+", encoding="utf8")
@@ -22,7 +27,7 @@ def formatUrl(rootUrl, lineString):
 
     return newUrl
 
-
+#test
 getUrl("https://www.pcmag.com/reviews/", "phoneListUnformatted.txt")
 
 
