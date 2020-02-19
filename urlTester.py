@@ -37,7 +37,7 @@ def allUrlTest(urlListFile):
         time.sleep(4)
 
 #test
-allUrlTest("testUrlList.txt")
+#allUrlTest("testUrlList.txt")
 
 # writes pairs of phone names and working urls to json file
 # only test this using the test list file "testUrlList.txt" for right now
@@ -61,7 +61,7 @@ def allUrlJsonPrint(urlListFile):
     outputFile.write(jPhones)
 
 #test
-allUrlJsonPrint("testUrlList.txt")
+#allUrlJsonPrint("testUrlList.txt")
 
 
 
