@@ -2,9 +2,12 @@ from grabVergeURLs import getHTML as getHTML # Use the getHTML function already 
 import time, csv, json, requests, sys
 from bs4 import BeautifulSoup as BS
 
-# lambda functions which return true is they find a matching Beatiful Soup tag
 
+# lambda functions which return true is they find a matching Beatiful Soup tag
+GETSCORECARDS = lambda aside : aside.name == "aside" and (aside.has_attr("class") and (aside["class"][0] and "c-scorecard" in aside["class"][0]))  #scorecards are Aside tags
 GETSCORE = lambda tag : tag.has_attr("class") and ("c-scorecard__score-number" in tag["class"])
+GETGOOD = lambda ul : ul.name == "ul" and ( ul.parent.name == "div" and (ul.parent.find("h3") and "good stuff" in ul.parent.text.lower()))
+GETBAD =  lambda ul : ul.name == "ul" and ( ul.parent.name == "div" and (ul.parent.find("h3") and "bad stuff" in ul.parent.text.lower()))
 
 def scrapeVerge(ReviewURLs):
 	"""
@@ -26,14 +29,14 @@ def scrapeVerge(ReviewURLs):
 			continue
 		phones = phoneNames.strip().split("|") # get a list of each phone in review
 		# get the info divs from the score cards	
-		scoreInfoDivs = reviewSoup.find_all(lambda tag : tag.has_attr("class") and "c-scorecard__info" in tag["class"])
+		scoreCards = reviewSoup.find_all(GETSCORECARDS)
 		# Scrape the score card 
 		for phone in phones:
 			phone = phone.strip()
 			try:
-				ReviewData[phone] = scrapeScoreCard(scoreInfoDivs,phone)
+				ReviewData[phone] = scrapeScoreCards(scoreCards,phone)
 			except AttributeError as e:
-				print(f"Whoops, looks like I didn't find the scorecard for {phone} in {url}")
+				print(f"Failed to find a scorecard for {phone} in {url}")
 				continue
 		print(f"Scraped {count}/{len(ReviewURLs)}\nSleeping 10 seconds")
 		count += 1
@@ -41,18 +44,22 @@ def scrapeVerge(ReviewURLs):
 			
 	return ReviewData
 
-def scrapeScoreCard(infoDivs,phone):
+def scrapeScoreCards(cards,phone):
 	""" 
-	Parameters: (BeautifulSoup object) revSoup, (string) phone
+	Parameters: (BeautifulSoup object) cards, (string) phone
 	returns: (dictionary<string:string>) phoneData
-	Given a BS4 object and a phone name generates a dicitonary mapping data field names to data 
-	scrapped from the verge review. 
+	Given a BS4 result set of aside tags and a phone name generates a dicitonary
+	mapping data field names to data scrapped from the verge review. 
 	"""
 	phoneData = dict()
+	
+	# Loop over the cards, find the card for phone of interest and scrape data into a dictionary
+	for card in cards:
+		if phone in card.text:
+			phoneData["score"] = float(card.find(GETSCORE).get_text().strip().lower().replace(" out of 10",""))
+			phoneData["good stuff"] = card.find(GETGOOD).text.strip() 
+			phoneData["bad stuff"] = card.find(GETBAD).text.strip()
 
-	for div in infoDivs:
-		if phone in div.text:
-			phoneData["score"] = float(div.find(GETSCORE).get_text().strip().lower().replace(" out of 10",""))
 
 	if not phoneData:
 		print(f"Something went wrong looking for {phone}")
@@ -93,9 +100,4 @@ def main(argv):
 # If it's the main module, run the main funciton
 if __name__ == "__main__":
 	main(sys.argv)
-
-
-
-
-
 
