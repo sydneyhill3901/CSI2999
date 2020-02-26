@@ -1,0 +1,399 @@
+/*********************************************
+GENERAL
+**********************************************/
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    background: #ededed;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    font-size: 13px;
+}
+
+h1,
+h2,
+h3 {
+    margin: 0;
+    padding: 0;
+}
+
+
+/*********************************************
+CONTAINER
+**********************************************/
+.container {
+    width: 1200px;
+    margin: 0px auto;
+}
+
+
+/*********************************************
+HEADER
+**********************************************/
+#header-wrapper {
+    overflow: hidden;
+    background: #3b3b3b;
+}
+
+#header {
+    overflow: hidden;
+    height: 150px;
+}
+
+
+/*********************************************
+LOGO
+**********************************************/
+#logo {
+    float: left;
+    padding-left: 20px;
+    
+}
+
+#logo h1 a {
+    display: block;
+    line-height: 150px;
+    text-decoration: none;
+    font-family: 'Righteous', cursive;
+    font-size: 40px;
+    color: #FFFFFF;
+}
+
+
+/*********************************************
+MENU
+**********************************************/
+#menu {
+    float: right;
+    width: 700px;
+}
+
+#menu ul {
+    float: right;
+    margin: 0px;
+    padding: 60px 20px 0px 0px;
+    list-style: none;
+}
+
+#menu li {
+    float: left;
+    margin-left: 10px;
+}
+
+#menu a {
+    display: block;
+    padding: 10px 20px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-family: 'Archivo Narrow', sans-serif;
+    font-size: 12px;
+    color: #FFFFFF;
+}
+
+#menu .active a {
+    background: #14A9C5;
+    border-radius: 5px;
+}
+
+#menu .active a:hover {
+    background-color: #026A7D;
+}
+
+
+/*********************************************
+CONTENT WRAPPER
+**********************************************/
+#featured-wrapper {
+    overflow: hidden;
+    padding: 25px 0px;
+    text-align: center;
+}
+
+#featured header {
+    display: block;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+    font-size: 30px;
+    color: #333333;
+}
+
+
+/*********************************************
+BUTTON STYLING
+**********************************************/
+.button {
+    display: inline-block;
+    margin: 0px 10px;
+    padding: 10px 30px;
+    background: #20e1b6;
+    transition: background-color .25s ease-in-out;
+    border-radius: 5px;
+    box-shadow: 0px 0px 0px 5px rgba(255, 255, 255, 1);
+    letter-spacing: 2px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-family: 'Archivo Narrow', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #FFF;
+}
+
+.button:hover {
+    background-color: #00ad87;
+}
+
+.button-small {
+    margin: 5px 0px;
+    box-shadow: none;
+    font-size: 10px;
+    color: #FFFFFF;
+}
+
+
+/*********************************************
+CONTENT
+**********************************************/
+#content header {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 30px;
+    font-weight: 400;
+    color: #333;
+}
+
+#two-column h3 {
+    padding-bottom: 5px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#two-column img {
+    padding: 5px;
+}
+
+#more-list {
+    font-size: 15px;
+}
+
+#more-list ul {
+    padding-left: 75px;
+    
+}
+
+
+/*********************************************
+BANNER
+**********************************************/
+#banner-wrapper {
+    clear: both;
+    overflow: hidden;
+    padding: 12px 0px 1px 0px;
+    margin-top: 10px;
+    background: #20e1b6;
+    text-align: center;
+    color: #fff;
+}
+
+#banner p {
+    letter-spacing: -1px;
+    font-size: 18px;
+}
+
+
+/*********************************************
+FOOTER
+**********************************************/
+
+#copyright {
+    overflow: hidden;
+    padding: 3px 0px 3px 0px;
+    text-align: center;
+    color: #606060;
+}
+
+
+/*********************************************
+CARDS
+**********************************************/
+.card-list {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+    display: flex;
+}
+
+.card-list > :not(:first-child) {
+    margin-left: .5rem;
+}
+
+.card-list > :not(:last-child) {
+    margin-right: .5rem;
+}
+
+.card-list li {
+    flex: 1 1 0;
+}
+
+.card {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: #333;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: ease-in all .1s;
+    box-shadow:
+        0 1px 1px rgba(0, 0, 0, 0.1),
+        0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+        0 2px 2px rgba(0, 0, 0, 0.1),
+        0 4px 4px rgba(0, 0, 0, 0.1),
+        0 8px 8px rgba(0, 0, 0, 0.1),
+        0 16px 16px rgba(0, 0, 0, 0.1),
+        0 32px 32px rgba(0, 0, 0, 0.1);
+}
+
+.card > * {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.card > :not(.card-img-cont) {
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+.card-category {
+    font-weight: bold;
+    font-size: .8rem;
+    text-transform: uppercase;
+    margin-bottom: 0;
+    opacity: .5;
+}
+
+.card-img-cont {
+    order: -1;
+    width: 100%;
+    height: 0;
+    padding-bottom: 66%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.card-img {
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+/*********************************************
+REVIEW STYLE
+**********************************************/
+#flex-content {
+    height: 100vh;
+    margin: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    grid-template-rows: 1.5fr 1fr 1fr;
+    grid-gap: 20px 20px;
+}
+
+.cell {
+    color: white;
+    font-size: 3rem;
+    text-align: center;
+    padding: 4rem;
+}
+
+.cell-1 {
+    background: deepskyblue;
+    grid-row: 1/3;
+    grid-column: 2/2;
+}
+
+.cell-2 {
+    background: orangered;
+}
+
+.cell-3 {
+    background: royalblue;
+}
+
+.cell-4 {
+    background: gold;
+    grid-row: 3/3;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+/*********************************************
+MEDIA QUERIES
+**********************************************/
+@media only screen and (max-width: 768px) {
+
+    /* For mobile phones: */
+    .container {
+        width: 100%
+    }
+
+    #header {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+
+    }
+
+    #menu {
+        padding-bottom: 20px;
+    }
+
+    #menu ul {
+        float: none;
+        padding: 0px 20px 0px 0px;
+    }
+
+    #featured header {
+        font-size: 20px;
+    }
+
+    #content header {
+        font-size: 20px;
+        padding-left: 15px;
+    }
+
+    .card-list {
+        flex-direction: column;
+    }
+
+    .card-list > :not(:first-child) {
+        margin-left: 0rem;
+        padding: 10px;
+    }
+
+    .card-list > :not(:last-child) {
+        margin-right: 0rem;
+        padding: 10px;
+    }
+
+    .card {
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 1100px) {
+    
+    
+    .container {
+        width: 100%
+    }
+}
