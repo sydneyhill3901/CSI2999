@@ -11,9 +11,22 @@ class WiredReview:
         self.good = getWiredGood(self.soup)
         self.bad = getWiredBad(self.soup)
 
+
     def printReviewSummary(self):
         outputList = [self.phoneName, self.url, self.score, self.good, self.bad]
         return outputList
+
+    def getScore(self):
+        return self.score
+
+    def getGood(self):
+        return self.good
+
+    def getBad(self):
+        return self.bad
+
+    def getUrl(self):
+        return self.url
 
 def createSoup(reviewPageUrl):
     reviewPage = requests.get(reviewPageUrl)
@@ -46,7 +59,6 @@ def getWiredBad(reviewPageSoup):
 
 def scrapeReviews(urlCsv, timeSleep):
     sourceFile = open(urlCsv, "r", encoding="utf8")
-    outputFile = open("WiredData.csv", "a+", encoding="utf8")
     outputList = []
     for row in sourceFile:
         x = row.split(",")
@@ -60,8 +72,13 @@ def scrapeReviews(urlCsv, timeSleep):
                 outputList.append(x)
         fancySleep(timeSleep)
     print("Reached end of reviews")
+    return outputList
+
+def writeCsv(outputList):
+    outputFile = open("WiredData.csv", "a+", encoding="utf8")
     for y in outputList:
         outputFile.write(str(y) + ",")
+
 
 def fancySleep(timeSleep):
     print("sleeping " + str(int(timeSleep)) + " seconds", end="", flush=True)  # https://stackoverflow.com/questions/5598181/multiple-prints-on-the-same-line-in-python

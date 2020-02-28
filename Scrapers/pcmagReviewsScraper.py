@@ -10,10 +10,26 @@ class PCMagReview:
         self.score = getPCmagReviewScore(self.soup)
         self.good = str(getPCmagGood(self.soup))
         self.bad = str(getPCmagBad(self.soup))
+        self.image = getPhotoLink(self.soup)
 
     def printReviewSummary(self):
-        outputList = [self.phoneName, self.url, self.score, self.good, self.bad]
+        outputList = [self.phoneName, self.url, self.score, self.good, self.bad, self.image]
         return outputList
+
+    def getScore(self):
+        return self.score
+
+    def getGood(self):
+        return self.good
+
+    def getBad(self):
+        return self.bad
+
+    def getUrl(self):
+        return self.url
+
+    def getImage(self):
+        return self.image
 
 
 def createSoup(reviewPageUrl):
@@ -53,10 +69,19 @@ def printReviewSummary(phoneName, reviewPageUrl):
     outputList = [phoneName, reviewPageUrl, score, good, bad]
     return outputList
 
-# format phoneName, url
+def getPhotoLink(reviewPageSoup):
+    x = reviewPageSoup.find("div", class_="relative")
+    y = x.find_next("div", class_="relative")
+    z = y.find_next("div", class_="relative")
+    a = z.find_next("div", class_="relative")
+    b = a.find_next("div", class_="relative")
+    c = b.find_next("div", class_="relative")
+    d = c.find_next("div", class_="relative")
+    e = d.find("img")['src']
+    return e
+
 def scrapeReviews(urlCsv, timeSleep):
     sourceFile = open(urlCsv, "r", encoding="utf8")
-    outputFile = open("PCmagData.csv", "a+", encoding="utf8")
     outputList = []
     for row in sourceFile:
         x = row.split(",")
@@ -70,11 +95,12 @@ def scrapeReviews(urlCsv, timeSleep):
                 outputList.append(x)
         fancySleep(timeSleep)
     print("Reached end of reviews")
+    return outputList
+
+def writeCsv(outputList):
+    outputFile = open("PCmagData.csv", "a+", encoding="utf8")
     for y in outputList:
         outputFile.write(str(y) + ",")
-
-
-
 
 def fancySleep(timeSleep):
     print("sleeping " + str(int(timeSleep)) + " seconds", end="", flush=True)  # https://stackoverflow.com/questions/5598181/multiple-prints-on-the-same-line-in-python
@@ -89,5 +115,4 @@ def fancySleep(timeSleep):
 
 
 
-#test
 scrapeReviews("PCmagURLs.csv", 10)
