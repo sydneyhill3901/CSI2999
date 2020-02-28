@@ -10,7 +10,7 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Righteous&display=swap" rel="stylesheet">
-	<title>[Phone Name] Review Report</title>
+	<title>{{phoneName|default:"Phone Name Here"}} Review Report</title>
 </head>
 
 <body>
@@ -45,7 +45,7 @@
             <!-- [Content] -->
             <div id="featured-wrapper">
                 <div id="featured" class="container">
-                    <header>Review Page</header>
+						<header>{{phoneName|default:"Phone Name"}} Review Page</header>
 
                     <!-- [Buttons if needed]
             
@@ -58,16 +58,101 @@
                     <div id="content">
                         <div id="flex-content">
 
-                            <div class="cell cell-1">Prices</div>
-                            <div class="cell cell-2">Phone Image</div>
-                            <div class="cell cell-3">Rating</div>
-                            <div class="cell cell-4">Reviews</div>
-
-
+							<div class="cell cell-1"><h3>Prices</h3></div>
+							<div class="cell cell-2"><img src={{imageURL|default:"#"}} alt="No&nbsp;Phone&nbsp;Image&nbsp;Found"></div>
+							<div class="cell cell-3">
+								<h3>Rating</h3>
+								<ul>
+									{% for site, score in scores %}
+										{%if "Average" in site  %}
+											<li class="AvgScore"> {{site}} : {{score}} </li>
+										{% else %}
+											<li> {{site}} | {{score}} </li>
+										{% endif %}
+									{% empty %}
+									<li class="No_Scores">No Scores Found</li>
+									{% endfor %}
+								</ul>
+							</div>
+							<div class="cell cell-4"><h3>Reviews</h3>
+								<ul class="pros">
+									<li>
+										<ul "cnet">
+											{% for pro in cnetPros %}
+												<li> {{pro}} </li>
+											{% empty %}
+												<li class="empty">CNET Pros Not Found</li>
+											{% endfor %}
+										</ul>
+									</li>
+									<li>
+										<ul "wired">
+											{% for pro in wiredPros %}
+												<li> {{pro}} </li>
+											{% empty %}
+												<li class=empty">Wired Pros Not Found</li>
+											{% endfor %}	
+										</ul>
+									</li>
+									<li>
+										<ul "pcMag">
+											{% for pro in pcMagPros %}
+												<li> {{pro}} </li>
+											{% empty %}
+												<li class="empty">PCMag Pros Not Found</li>
+											{% endfor %}	
+										</ul>
+									</li>
+									<li>
+										<ul "verge">
+											{% for pro in vergePros %}
+												<li> {{pro}} </li>
+											{% empty %}
+												<li class="empty">Verge Pros Not Found</li>
+											{% endfor %}	
+										</ul>
+									</li>
+								</ul>
+								<ul class="cons">
+									<li>
+										<ul "cnet">
+											{% for pro in cnetCons %}
+												<li> {{pro}} </li>
+											{% empty %}
+												<li class="empty">CNET Cons Not Found</li>
+											{% endfor %}
+										</ul>
+									</li>
+									<li>
+										<ul "wired">
+											{% for pro in wiredCons %}
+												<li> {{pro}} </li>
+											{% empty %}
+												<li class=empty">Wired Cons Not Found</li>
+											{% endfor %}	
+										</ul>
+									</li>
+									<li>
+										<ul "pcMag">
+											{% for pro in pcMagCons %}
+												<li> {{pro}} </li>
+											{% empty %}
+												<li class="empty">PCMag Cons Not Found</li>
+											{% endfor %}	
+										</ul>
+									</li>
+									<li>
+										<ul "verge">
+											{% for pro in vergeCons %}
+												<li> {{pro}} </li>
+											{% empty %}
+												<li class="empty">Verge Cons Not Found</li>
+											{% endfor %}	
+										</ul>
+									</li>
+								</ul>
+							</div>
                         </div>
-
-
-
 
 
                     </div>

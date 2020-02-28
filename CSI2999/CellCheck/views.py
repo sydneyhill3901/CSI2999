@@ -16,6 +16,5 @@ def Manufacturer(request):
 	return render(request, "CellCheck/Manufacturer.html", context)
 
 def Review(request):
-	context = {}
-
-	return render(request, "CellCheck/Review.html", context)
+		context = { "imageURL":str(),"phoneName":str(),"scores":[],	"vergePros":list(str()),	"vergeCons":list(str()),	"cnetPros":list(str()),"wiredPros":list(str()),	"wiredCons":list(str()),	"pcMagPros":list(str()),	"pcMagCons":list(str()),	"cnetSubScores":dict()} # scores: List of ("name",fltScore) tuples, 
+		return render(request, "CellCheck/Review.html", context)
