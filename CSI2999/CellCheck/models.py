@@ -1,4 +1,5 @@
 from django.db import models
+#TODO: Add query methods for use by models
 
 """
 Notes:
@@ -18,11 +19,17 @@ class Phone(models.Model):
 	# A date field so we know when the phone was added to the database
 	DataAdded = models.DateField()
 
+	def __str__(self):
+		return self.PhoneName
+
 class Site(models.Model):
 	# Having this as a table means we only have to store foreign keys
 	# in rating table entries rather than redundant strings, saving space
 	# also more extensible for the "future"
-	Name = models.CharField(max_length = 40)
+	SiteName = models.CharField(max_length = 40)
+
+	def __str__(self):
+		return self.SiteName
 
 class Rating(models.Model):
 	# Need to store reviews as floats b/c some sites scores are to 1st decimal point
@@ -31,15 +38,24 @@ class Rating(models.Model):
 	PhoneID = models.ForeignKey(Phone, on_delete=models.CASCADE)
 	SiteID = models.ForeignKey(Site, on_delete=models.CASCADE)
 
+	def __str__(self):
+		return f"{self.Rating} rating for phone {self.PhoneID} for site# {self.SiteID}"
+
 class ProList(models.Model):
 	PhoneID = models.ForeignKey(Phone, on_delete=models.CASCADE)
 	SiteID = models.ForeignKey(Site, on_delete=models.CASCADE)
 	Pros = models.CharField(max_length = 200)
 
+	def __str__(self):
+		return f"pros for phone #{self.PhoneID} \n{Pros}"
+
 class ConList(models.Model):
 	PhoneID = models.ForeignKey(Phone, on_delete=models.CASCADE)
 	SiteID = models.ForeignKey(Site, on_delete=models.CASCADE)
 	Cons = models.CharField(max_length = 200)
+
+	def __str__(self):
+		return f"cons for phone #{self.PhoneID} \n{Cons}"
 
 class CNETDetailedScore(models.Model):
 	phoneID = models.ForeignKey(Phone, on_delete=models.CASCADE)
@@ -48,4 +64,6 @@ class CNETDetailedScore(models.Model):
 	Performance = models.PositiveSmallIntegerField()
 	Camera = models.PositiveSmallIntegerField()
 	Battery = models.PositiveSmallIntegerField()
-	
+
+	def __str__(self):
+		return f"CNET Detailed Scores\nDesign: {self.Design}\nFeatures: {self.Features}\nPerformance: {self.Performance}\nCamera: {self.Camera}\nBattery: {self.Battery}"
