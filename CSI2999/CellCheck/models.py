@@ -45,7 +45,7 @@ class Rating(models.Model):
 class ProList(models.Model):
 	Phone = models.ForeignKey(Phone, on_delete=models.CASCADE)
 	Site = models.ForeignKey(Site, on_delete=models.CASCADE)
-	Pros = models.CharField(max_length = 200)
+	Pros = models.TextField(max_length = 200)
 
 	def __str__(self):
 		return f"{self.Site}'s pros for phone #{self.Phone}"
@@ -53,7 +53,7 @@ class ProList(models.Model):
 class ConList(models.Model):
 	Phone = models.ForeignKey(Phone, on_delete=models.CASCADE)
 	Site = models.ForeignKey(Site, on_delete=models.CASCADE)
-	Cons = models.CharField(max_length = 200)
+	Cons = models.TextField(max_length = 200)
 
 	def __str__(self):
 		return f"{self.Site}'s cons for phone #{self.Phone}"

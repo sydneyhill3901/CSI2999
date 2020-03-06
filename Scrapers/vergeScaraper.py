@@ -40,7 +40,7 @@ def scrapeVerge(ReviewURLs):
 				continue
 		print(f"Scraped {count}/{len(ReviewURLs)}\nSleeping 10 seconds")
 		count += 1
-		time.sleep(10)
+#		time.sleep(10)
 			
 	return ReviewData
 
@@ -125,7 +125,7 @@ def writePhoneData(phoneName,phoneData,siteID,connection):
 		c.execute("UPDATE CellCheck_Phone SET VergeURL = ? WHERE PhoneName=?",(phoneData["vergeURL"],phoneName,))
 	# Phone isn't in database yet  	
 	else:
-		c.execute("INSERT INTO CellCheck_Phone (PhoneName,CnetURL,WiredURL,PCMagURL,VergeURL,DateAdded) VALUES (?,?,?,?,?,?)",(phoneName,"","","",phoneData["vergeURL"],datetime.date.today()))
+		c.execute("INSERT INTO CellCheck_Phone (PhoneName,CnetURL,WiredURL,PCMagURL,VergeURL,ReleaseDate) VALUES (?,?,?,?,?,?)",(phoneName,"","","",phoneData["vergeURL"],""))
 	
 	# Next 4 linkes commit the insertion and get the phone's id so it can be used as a foreign key in other tables
 	connection.commit()
