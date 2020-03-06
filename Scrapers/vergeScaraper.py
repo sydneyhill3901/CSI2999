@@ -1,5 +1,5 @@
 from grabVergeURLs import getHTML as getHTML # Use the getHTML function already written in grabVergeURLS
-import time, csv, json, requests, sys
+import time, csv, json, requests, sys, datetime, sqlite3
 from bs4 import BeautifulSoup as BS
 
 
@@ -11,7 +11,7 @@ GETBAD =  lambda ul : ul.name == "ul" and ( ul.parent.name == "div" and (ul.pare
 
 def scrapeVerge(ReviewURLs):
 	"""
-	Paramaters: (Dictionary <str:str>) ReviewURLs
+	PArameters: (Dictionary <str:str>) ReviewURLs
 	Return: (Dictionary <str>: <Dictionary <str:str>) ReviewData)
 	Takes in a dictionary associationg phones to review URLs. For each review, scrapes the pertinent
 	information into a dictionary containing the data to save to the db. The returned ReviewData 
@@ -34,7 +34,7 @@ def scrapeVerge(ReviewURLs):
 		for phone in phones:
 			phone = phone.strip()
 			try:
-				ReviewData[phone] = scrapeScoreCards(scoreCards,phone)
+				ReviewData[phone] = scrapeScoreCards(scoreCards,phone,url)
 			except AttributeError as e:
 				print(f"Failed to find a scorecard for {phone} in {url}")
 				continue
@@ -44,9 +44,9 @@ def scrapeVerge(ReviewURLs):
 			
 	return ReviewData
 
-def scrapeScoreCards(cards,phone):
+def scrapeScoreCards(cards,phone,url):
 	""" 
-	Parameters: (BeautifulSoup object) cards, (string) phone
+	Parameters: (BeautifulSoup object) cards, (string) phone, (string) url
 	returns: (dictionary<string:string>) phoneData
 	Given a BS4 result set of aside tags and a phone name generates a dicitonary
 	mapping data field names to data scrapped from the verge review. 
@@ -59,6 +59,7 @@ def scrapeScoreCards(cards,phone):
 			phoneData["score"] = float(card.find(GETSCORE).get_text().strip().lower().replace(" out of 10",""))
 			phoneData["good stuff"] = card.find(GETGOOD).text.strip() 
 			phoneData["bad stuff"] = card.find(GETBAD).text.strip()
+			phoneData["vergeURL"] = url
 
 
 	if not phoneData:
@@ -68,7 +69,7 @@ def scrapeScoreCards(cards,phone):
 
 def readReviewsJSON(filename):
 	"""
-	Paramaters: (str) filename
+	Parameters: (str) filename
 	return: (Dictionary <str:str>) Reviews 
 	Opens the JSON file containing reivew URLS associated w/ phone names. uses JSON module to 
 	read them into a dictionary mapping strings to phone names
@@ -79,7 +80,60 @@ def readReviewsJSON(filename):
 		reviews = json.loads(rawString)
 	return reviews
 
+def writeData(dataDictionary,filename="../CSI2999/db.sqlite3"):
+	"""
+	Parameters: (dictionary <str:dictionary>) dataDicitonary, (string) filename
+	Attempts to write the data for each phone in the review data scraped into
+	the database specified by filename. filename is overridable, but defaults to a 
+	sqlite3 file in the sibling CSI2999 folder
+	"""
+	connection = sqlite3.connect(filename)
+	cursor = connection.cursor()
+    # Get the siteID for later writes
+	cursor.execute("SELECT id FROM CellCheck_Site WHERE SiteName='Verge'")
+	siteID = cursor.fetchone()[0]
+	if type(siteID) != int:
+		print("Something went VERY wrong with the sites table :(")
+		exit()
+	
+	failures = 0 # Count how many times my script fell short :'(
+	for name,data in dataDictionary.items():
+		try:
+			writePhoneData(name.strip().lower(),data,siteID,connection)
+			connection.commit() # Commit after each insertion
+		except Exception as e:
+			print(f"{e}")
+			failures += 1
+			continue
+	
+	print(f"Finished writing to db with {failures} failed writes")
 
+def writePhoneData(phoneName,phoneData,siteID,connection):
+	"""
+	Parameters: (string) phoneName (dictionary <str:data>) phoneData, (int)siteID, (sqlite3 connection)
+	return: None
+	Given a Cursor and a dictionary containing scraped phone data writes the data scraped for one Verge
+	phone review into the data to the sqlite database. 
+	"""
+	c = connection.cursor()	
+	# check if phone in DB
+	c.execute("SELECT id FROM CellCheck_Phone WHERE PhoneName=?",(phoneName,))
+	# Phone is in database already, just update verge's columns
+	phoneID = c.fetchone()
+
+	if phoneID:
+		c.execute("UPDATE CellCheck_Phone SET VergeURL = ? WHERE PhoneName=?",(phoneData["vergeURL"],phoneName,))
+	# Phone isn't in database yet  	
+	else:
+		c.execute("INSERT INTO CellCheck_Phone (PhoneName,CnetURL,WiredURL,PCMagURL,VergeURL,DateAdded) VALUES (?,?,?,?,?,?)",(phoneName,"","","",phoneData["vergeURL"],datetime.date.today()))
+	
+	# Next 4 linkes commit the insertion and get the phone's id so it can be used as a foreign key in other tables
+	connection.commit()
+	c.execute("SELECT id FROM CellCheck_Phone WHERE PhoneName=?",(phoneName,))
+	phoneID = c.fetchone()[0]
+	c.execute("INSERT INTO CellCheck_Rating (Rating,Phone_id,Site_id) VALUES (?,?,?) ",(phoneData["score"],phoneID,siteID))	
+	c.execute("INSERT INTO CellCheck_ProList (Phone_id, Site_id, Pros) VALUES (?,?,?)",(phoneID,siteID,phoneData["good stuff"],))
+	c.execute("INSERT INTO CellCheck_ConList (Phone_id, Site_id, Cons) VALUES (?,?,?)",(phoneID,siteID,phoneData["bad stuff"],))
 
 def main(argv):
 	""" If 't' or 'test' is typed as a console argument, the script is run in test mode
@@ -92,8 +146,8 @@ def main(argv):
 		for k,v in vergeData.items():
 			print(f"{k} {v} \n")
 	else:
-		pass # This would be where data would be fed into the DB
-
+		writeData(vergeData)
+	
 
 
 # This condtional just checks if this .py file has been loaded as the main module

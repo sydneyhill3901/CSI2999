@@ -1,5 +1,5 @@
 from django.db import models
-#TODO: Add query methods for use by models
+#TODO: Add query methods for use in views 
 
 """
 Notes:
@@ -39,7 +39,7 @@ class Rating(models.Model):
 	Site = models.ForeignKey(Site, on_delete=models.CASCADE)
 
 	def __str__(self):
-		return f"{self.Rating} rating for phone {self.PhoneID} for site# {self.SiteID}"
+			return f"{self.Site}'s rating for the: {self.Phone}"
 
 class ProList(models.Model):
 	Phone = models.ForeignKey(Phone, on_delete=models.CASCADE)
@@ -47,7 +47,7 @@ class ProList(models.Model):
 	Pros = models.CharField(max_length = 200)
 
 	def __str__(self):
-		return f"pros for phone #{self.PhoneID} \n{Pros}"
+		return f"{self.Site}'s pros for phone #{self.Phone}"
 
 class ConList(models.Model):
 	Phone = models.ForeignKey(Phone, on_delete=models.CASCADE)
@@ -55,7 +55,7 @@ class ConList(models.Model):
 	Cons = models.CharField(max_length = 200)
 
 	def __str__(self):
-		return f"cons for phone #{self.PhoneID} \n{Cons}"
+		return f"{self.Site}'s cons for phone #{self.Phone}"
 
 class CNETDetailedScore(models.Model):
 	phone = models.ForeignKey(Phone, on_delete=models.CASCADE)
@@ -67,3 +67,4 @@ class CNETDetailedScore(models.Model):
 
 	def __str__(self):
 		return f"CNET Detailed Scores\nDesign: {self.Design}\nFeatures: {self.Features}\nPerformance: {self.Performance}\nCamera: {self.Camera}\nBattery: {self.Battery}"
+
