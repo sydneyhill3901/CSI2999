@@ -58,10 +58,14 @@
                     <div id="content">
                         <div id="flex-content">
 
-							<div class="cell cell-1"><h3>Prices</h3></div>
-							<div class="cell cell-2"><img src={{imageURL|default:"#"}} alt="No&nbsp;Phone&nbsp;Image&nbsp;Found"></div>
-							<div class="cell cell-3">
-								<h3>Rating</h3>
+							<div class="cell price-cell">
+                                <h3>Prices</h3>
+                                <hr/>
+                            </div>
+							<div class="cell img-cell"><img src={{imageURL|default:"#"}} alt="No&nbsp;Phone&nbsp;Image&nbsp;Found"></div>
+							<div class="cell rating-cell">
+								<h3>Ratings</h3>
+                                    <hr/>
 								<ul>
 									{% for site, score in scores %}
 										{%if "Average" in site  %}
@@ -74,83 +78,88 @@
 									{% endfor %}
 								</ul>
 							</div>
-							<div class="cell cell-4"><h3>Reviews</h3>
-								<ul class="pros">
-									<li>
-										<ul "cnet">
-											{% for pro in cnetPros %}
-												<li> {{pro}} </li>
-											{% empty %}
-												<li class="empty">CNET Pros Not Found</li>
-											{% endfor %}
-										</ul>
-									</li>
-									<li>
-										<ul "wired">
-											{% for pro in wiredPros %}
-												<li> {{pro}} </li>
-											{% empty %}
-												<li class=empty">Wired Pros Not Found</li>
-											{% endfor %}	
-										</ul>
-									</li>
-									<li>
-										<ul "pcMag">
-											{% for pro in pcMagPros %}
-												<li> {{pro}} </li>
-											{% empty %}
-												<li class="empty">PCMag Pros Not Found</li>
-											{% endfor %}	
-										</ul>
-									</li>
-									<li>
-										<ul "verge">
-											{% for pro in vergePros %}
-												<li> {{pro}} </li>
-											{% empty %}
-												<li class="empty">Verge Pros Not Found</li>
-											{% endfor %}	
-										</ul>
-									</li>
-								</ul>
-								<ul class="cons">
-									<li>
-										<ul "cnet">
-											{% for pro in cnetCons %}
-												<li> {{pro}} </li>
-											{% empty %}
-												<li class="empty">CNET Cons Not Found</li>
-											{% endfor %}
-										</ul>
-									</li>
-									<li>
-										<ul "wired">
-											{% for pro in wiredCons %}
-												<li> {{pro}} </li>
-											{% empty %}
-												<li class=empty">Wired Cons Not Found</li>
-											{% endfor %}	
-										</ul>
-									</li>
-									<li>
-										<ul "pcMag">
-											{% for pro in pcMagCons %}
-												<li> {{pro}} </li>
-											{% empty %}
-												<li class="empty">PCMag Cons Not Found</li>
-											{% endfor %}	
-										</ul>
-									</li>
-									<li>
-										<ul "verge">
-											{% for pro in vergeCons %}
-												<li> {{pro}} </li>
-											{% empty %}
-												<li class="empty">Verge Cons Not Found</li>
-											{% endfor %}	
-										</ul>
-									</li>
-								</ul>
+							<div class="cell review-cell"><h3>Reviews</h3>
+                            <hr/>
+                                <div class="procon">
+                                    <ul class="pros">
+                                        <h3>Pros</h3>
+                                        <li>
+                                            <ul "cnet">
+                                                {% for pro in cnetPros %}
+                                                    <li> {{pro}} </li>
+                                                {% empty %}
+                                                    <li class="empty">CNET Pros Not Found</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <ul "wired">
+                                                {% for pro in wiredPros %}
+                                                    <li> {{pro}} </li>
+                                                {% empty %}
+                                                    <li class=empty">Wired Pros Not Found</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <ul "pcMag">
+                                                {% for pro in pcMagPros %}
+                                                    <li> {{pro}} </li>
+                                                {% empty %}
+                                                    <li class="empty">PCMag Pros Not Found</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <ul "verge">
+                                                {% for pro in vergePros %}
+                                                    <li> {{pro}} </li>
+                                                {% empty %}
+                                                    <li class="empty">Verge Pros Not Found</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                    <ul class="cons">
+                                    <h3>Cons</h3>
+                                        <li>
+                                            <ul "cnet">
+                                                {% for pro in cnetCons %}
+                                                    <li> {{pro}} </li>
+                                                {% empty %}
+                                                    <li class="empty">CNET Cons Not Found</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <ul "wired">
+                                                {% for pro in wiredCons %}
+                                                    <li> {{pro}} </li>
+                                                {% empty %}
+                                                    <li class=empty">Wired Cons Not Found</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <ul "pcMag">
+                                                {% for pro in pcMagCons %}
+                                                    <li> {{pro}} </li>
+                                                {% empty %}
+                                                    <li class="empty">PCMag Cons Not Found</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <ul "verge">
+                                                {% for pro in vergeCons %}
+                                                    <li> {{pro}} </li>
+                                                {% empty %}
+                                                    <li class="empty">Verge Cons Not Found</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
 							</div>
                         </div>
 
