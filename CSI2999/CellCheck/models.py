@@ -17,7 +17,8 @@ class Phone(models.Model):
 	PCMagURL = models.CharField(max_length = 160) 
 	VergeURL = models.CharField(max_length = 160) 
 	# A date field so we know when the phone was added to the database
-	DateAdded = models.DateField(auto_now_add=True)
+	#DateAdded = models.DateField(auto_now_add=True)
+	ReleaseDate = models.CharField(max_length = 40)
 
 	def __str__(self):
 		return self.PhoneName
