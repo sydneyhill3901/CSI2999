@@ -48,7 +48,7 @@ class ProList(models.Model):
 	Pros = models.TextField(max_length = 200)
 
 	def __str__(self):
-		return f"{self.Site}'s pros for phone #{self.Phone}"
+		return f"{self.Site}'s pros for phone {self.Phone}"
 
 class ConList(models.Model):
 	Phone = models.ForeignKey(Phone, on_delete=models.CASCADE)
@@ -56,7 +56,7 @@ class ConList(models.Model):
 	Cons = models.TextField(max_length = 200)
 
 	def __str__(self):
-		return f"{self.Site}'s cons for phone #{self.Phone}"
+		return f"{self.Site}'s cons for phone {self.Phone}"
 
 class CNETDetailedScore(models.Model):
 	phone = models.ForeignKey(Phone, on_delete=models.CASCADE)

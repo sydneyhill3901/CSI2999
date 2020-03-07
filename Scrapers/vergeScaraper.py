@@ -40,7 +40,7 @@ def scrapeVerge(ReviewURLs):
 				continue
 		print(f"Scraped {count}/{len(ReviewURLs)}\nSleeping 10 seconds")
 		count += 1
-#		time.sleep(10)
+		time.sleep(10)
 			
 	return ReviewData
 
@@ -80,6 +80,23 @@ def readReviewsJSON(filename):
 		reviews = json.loads(rawString)
 	return reviews
 
+def getConnection(path,attempt=1):
+	# Given a path to an sqlite database attempts to get a connection to the database
+	# Tries recursively 5 times before it fails. Sleeps for 5 seconds b/w each try.
+	# If attempt fails, exits the program
+	try:
+		return sqlite3.connect(path)
+	except Exception as e:
+		print(f"Failed to connect to sqlite database at {path}",end=" ")
+		if attempt < 6:
+			print("Trying again")
+			time.sleep(5)
+			return getConnection(path,attempt + 1)
+		else:
+			print(f"Too many failed attempts to connect to {path}, exiting.\n{e}")
+			exit()
+
+
 def writeData(dataDictionary,filename="../CSI2999/db.sqlite3"):
 	"""
 	Parameters: (dictionary <str:dictionary>) dataDicitonary, (string) filename
@@ -87,7 +104,7 @@ def writeData(dataDictionary,filename="../CSI2999/db.sqlite3"):
 	the database specified by filename. filename is overridable, but defaults to a 
 	sqlite3 file in the sibling CSI2999 folder
 	"""
-	connection = sqlite3.connect(filename)
+	connection = getConnection(filename)
 	cursor = connection.cursor()
     # Get the siteID for later writes
 	cursor.execute("SELECT id FROM CellCheck_Site WHERE SiteName='Verge'")
@@ -140,15 +157,22 @@ def main(argv):
 	and the dictionary generated is printend to console. """
 
 	revURLs = readReviewsJSON("VergeReviews.json") # Get a dictionary of the review webpagesA
-	vergeData = scrapeVerge(revURLs) # scrape and compile data into a dictionary ready for loading into DB
 	# This is just to test that the data has been grabbed 
 	if "test" in argv or "t" in argv:
+		vergeData = scrapeVerge(revURLs) # scrape and compile data into a dictionary ready for loading into DB
 		for k,v in vergeData.items():
 			print(f"{k} {v} \n")
+	# run with command line argument 'dbTest' to test writing to database with only 5 phones
+	elif "dbTest" in argv:
+		keys = list(revURLs.keys())[10:15]	
+		sampleURLs = {}
+		for key in keys:
+			sampleURLs[key] = revURLs[key]
+		vergeData = scrapeVerge(sampleURLs)
+		writeData(vergeData)
 	else:
 		writeData(vergeData)
 	
-
 
 # This condtional just checks if this .py file has been loaded as the main module
 # If it's the main module, run the main funciton
