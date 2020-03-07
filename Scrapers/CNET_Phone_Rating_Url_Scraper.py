@@ -3,6 +3,8 @@ import csv
 from bs4 import BeautifulSoup
 import time
 from datetime import datetime
+import sqlite3
+from decimal import Decimal
 
 
 def Main():
@@ -21,6 +23,27 @@ def Main():
     # Step 4 Create CSV File
     CreateCSVFile()
 
+    # Step 5 Put into database
+    # conn = sqlite3.connect(r'C:\Users\Andrew\Documents\CSI2999\CSI2999\CSI2999\db.sqlite3')
+    conn = sqlite3.connect("../CSI2999/db.sqlite3")
+    c = conn.cursor()
+    try:
+        AddSiteToDatabase(conn, c)
+        for i in RevisedRatingList:
+            phone = i[0]
+            url = i[1]
+            rating = i[2]
+            PlacePhonesInDatabase(phone.strip().lower(), url, conn, c)
+            PlaceRatingsInDatabase(phone.strip().lower(), rating, conn, c)
+        #c.execute("DELETE FROM CellCheck_Site")
+        #conn.commit()
+        #c.execute("DELETE FROM CellCheck_Phone")
+        #conn.commit()
+        #c.execute("DELETE FROM CellCheck_Rating")
+        #conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"Error syncing to Database \n{e}")
     PrintTime("End Time: ")
 
 # Print the time so I know how long the project runs for
@@ -47,7 +70,7 @@ def GetLastPage():
 def FillPhoneList(lastPage):
     try:
         pageNumber = 1
-        for pageNumber in range(int(lastPage) + 1):# replace 3 with lastPage to grab all the pages
+        for pageNumber in range(int(1) + 1):# replace 3 with lastPage to grab all the pages
             # This if only runs once when it is the first page
             if(pageNumber == 1):
                 req = requests.get('https://www.cnet.com/topics/phones/products/')
@@ -93,9 +116,9 @@ def ConvertRatings():
         phoneName = ' '.join(phoneName.split())
         rating = i[2]
         rating = (rating/5)*10
-        if(rating == 0):
-            rating = 'N/A'
-        RevisedRatingList.append((phoneName,i[1],rating))
+        if rating == 0:
+            rating = 0
+        RevisedRatingList.append((phoneName, i[1], rating))
 
 
 # take the created list and make a csv file
@@ -108,6 +131,50 @@ def CreateCSVFile():
             url = i[1]
             rating = i[2]
             filewriter.writerow([phone, url, rating])
+
+
+# Source: https://docs.python.org/3/library/sqlite3.html
+def AddSiteToDatabase(conn, c):
+    c.execute("SELECT count(*) FROM CellCheck_Site WHERE SiteName = 'CNET'")
+    exists = c.fetchone()[0]
+    if exists == 0:
+        c.execute("INSERT INTO CellCheck_Site (SiteName)"
+                  " values (?)",
+                  ("CNET",))
+        conn.commit()
+
+
+# Source: https://docs.python.org/3/library/sqlite3.html
+def PlacePhonesInDatabase(phone, url, conn, c):
+    c.execute("SELECT count(*) FROM CellCheck_Phone WHERE PhoneName = ?", (phone.strip().lower(),))
+    exists = c.fetchone()[0]
+    if exists == 0:
+        c.execute("INSERT INTO CellCheck_Phone (PhoneName, CnetURL, WiredURL, PCMagUrl, VergeURL, ReleaseDate)"
+                  " values (?, ?, ?, ?, ?, ?)",
+                  (phone.strip().lower(), url, "", "", "", ""))
+        conn.commit()
+    else:
+        c.execute("UPDATE CellCheck_Phone SET CnetURL = ? AND ReleaseDate = '' WHERE PhoneName = ?",
+                  (url, phone.strip().lower(),))
+        conn.commit()
+
+
+# Source: https://docs.python.org/3/library/sqlite3.html
+def PlaceRatingsInDatabase(phone, rating, conn, c):
+    c.execute("SELECT id FROM CellCheck_Phone WHERE PhoneName=?", (phone.strip().lower(),))
+    phoneid = c.fetchone()[0]
+    c.execute("SELECT * FROM CellCheck_Site WHERE SiteName = 'CNET'")
+    siteid = c.fetchone()[0]
+    c.execute("SELECT count(*) FROM CellCheck_Rating WHERE Phone_id = ? AND Site_id = ?", (phoneid, siteid))
+    exists = c.fetchone()[0]
+    if exists == 0:
+        c.execute("INSERT INTO CellCheck_Rating (Rating, Phone_id, Site_id)"
+                  " values (?, ?, ?)",
+                  (rating, phoneid, siteid))
+        conn.commit()
+    else:
+        c.execute("UPDATE CellCheck_Rating SET Rating = ? WHERE Phone_id = ? AND Site_id = ?", (rating, phoneid, siteid))
+        conn.commit()
 
 
 PhonesUrlRatingList = []
