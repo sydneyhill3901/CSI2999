@@ -2,3 +2,7 @@
 *.json
 *.csv
 *.sqlite3
+
+CSI2999/CellCheck/templates/.DS_Store
+
+CSI2999/CellCheck/templates/CellCheck/.DS_Store
