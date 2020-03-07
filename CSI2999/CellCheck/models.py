@@ -34,7 +34,7 @@ class Site(models.Model):
 
 class Rating(models.Model):
 	# Need to store reviews as floats b/c some sites scores are to 1st decimal point
-	Rating = models.DecimalField(max_digits=2, decimal_places=1) 
+	Rating = models.DecimalField(max_digits=3, decimal_places=1) 
 	# This is how you make a foreign key in django. Note the cascading delete
 	Phone = models.ForeignKey(Phone, on_delete=models.CASCADE)
 	Site = models.ForeignKey(Site, on_delete=models.CASCADE)
