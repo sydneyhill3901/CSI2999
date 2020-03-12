@@ -149,9 +149,9 @@ def PlacePhonesInDatabase(phone, url, conn, c):
     c.execute("SELECT count(*) FROM CellCheck_Phone WHERE PhoneName = ?", (phone.strip().lower(),))
     exists = c.fetchone()[0]
     if exists == 0:
-        c.execute("INSERT INTO CellCheck_Phone (PhoneName, CnetURL, WiredURL, PCMagUrl, VergeURL, ReleaseDate)"
-                  " values (?, ?, ?, ?, ?, ?)",
-                  (phone.strip().lower(), url, "", "", "", ""))
+        c.execute("INSERT INTO CellCheck_Phone (PhoneName, CnetURL, WiredURL, PCMagUrl, VergeURL, ReleaseDate, PhoneImageURL)"
+                  " values (?, ?, ?, ?, ?, ?, ?)",
+                  (phone.strip().lower(), url, "", "", "", "",""))
         conn.commit()
     else:
         c.execute("UPDATE CellCheck_Phone SET CnetURL = ? AND ReleaseDate = '' WHERE PhoneName = ?",
