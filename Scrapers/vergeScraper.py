@@ -8,6 +8,7 @@ GETSCORECARDS = lambda aside : aside.name == "aside" and (aside.has_attr("class"
 GETSCORE = lambda tag : tag.has_attr("class") and ("c-scorecard__score-number" in tag["class"])
 GETGOOD = lambda ul : ul.name == "ul" and ( ul.parent.name == "div" and (ul.parent.find("h3") and "good stuff" in ul.parent.text.lower()))
 GETBAD =  lambda ul : ul.name == "ul" and ( ul.parent.name == "div" and (ul.parent.find("h3") and "bad stuff" in ul.parent.text.lower()))
+GETIMG = lambda img : img.name == "img" and ( img.has_attr("class") and "c-scorecard__image" == img["class"][0] )
 
 def scrapeVerge(ReviewURLs):
 	"""
@@ -60,6 +61,7 @@ def scrapeScoreCards(cards,phone,url):
 			phoneData["good stuff"] = card.find(GETGOOD).text.strip() 
 			phoneData["bad stuff"] = card.find(GETBAD).text.strip()
 			phoneData["vergeURL"] = url
+			phoneData["imgURL"] = card.find(GETIMG)["src"].strip()
 
 
 	if not phoneData:
@@ -139,10 +141,10 @@ def writePhoneData(phoneName,phoneData,siteID,connection):
 	phoneID = c.fetchone()
 
 	if phoneID:
-		c.execute("UPDATE CellCheck_Phone SET VergeURL = ? WHERE PhoneName=?",(phoneData["vergeURL"],phoneName,))
+		c.execute("UPDATE CellCheck_Phone SET VergeURL = ?, PhoneImageURL = ? WHERE PhoneName=?",(phoneData["vergeURL"],phoneData["imgURL"],phoneName,))
 	# Phone isn't in database yet  	
 	else:
-		c.execute("INSERT INTO CellCheck_Phone (PhoneName,CnetURL,WiredURL,PCMagURL,VergeURL,ReleaseDate) VALUES (?,?,?,?,?,?)",(phoneName,"","","",phoneData["vergeURL"],""))
+		c.execute("INSERT INTO CellCheck_Phone (PhoneName,CnetURL,WiredURL,PCMagURL,VergeURL,ReleaseDate,PhoneImageURL) VALUES (?,?,?,?,?,?,?)",(phoneName,"","","",phoneData["vergeURL"],"",phoneData["imgURL"],))
 	
 	# Next 4 linkes commit the insertion and get the phone's id so it can be used as a foreign key in other tables
 	connection.commit()
@@ -171,6 +173,7 @@ def main(argv):
 		vergeData = scrapeVerge(sampleURLs)
 		writeData(vergeData)
 	else:
+		vergeData = scrapeVerge(revURLs) # scrape and compile data into a dictionary ready for loading into DB
 		writeData(vergeData)
 	
 
