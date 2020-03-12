@@ -16,9 +16,13 @@ class Phone(models.Model):
 	WiredURL = models.CharField(max_length = 160) 
 	PCMagURL = models.CharField(max_length = 160) 
 	VergeURL = models.CharField(max_length = 160) 
-	# A date field so we know when the phone was added to the database
-	#DateAdded = models.DateField(auto_now_add=True)
+	phoneImageURL = models.CharField(max_length = 160)
+	# A date field so we know when the phone was released
 	ReleaseDate = models.CharField(max_length = 40)
+
+	
+	def getID(self):
+		return self.id
 
 	def __str__(self):
 		return self.PhoneName
@@ -68,4 +72,5 @@ class CNETDetailedScore(models.Model):
 
 	def __str__(self):
 		return f"CNET Detailed Scores\nDesign: {self.Design}\nFeatures: {self.Features}\nPerformance: {self.Performance}\nCamera: {self.Camera}\nBattery: {self.Battery}"
+
 
