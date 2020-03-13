@@ -84,8 +84,8 @@
                                     <ul class="pros">
                                         <h3>Pros</h3>
                                         <li>
-                                            <button class="Collapsable">CNET</button>
-                                            <ul "cnet">
+                                            <button class="Collapsible">CNET</button>
+                                            <ul class="cnet">
                                                 {% for pro in cnetPros %}
                                                     <li> {{pro}} </li>
                                                 {% empty %}
@@ -94,18 +94,18 @@
                                             </ul>
                                         </li>
                                         <li>
-                                            <button class="Collapsable">Wired</button>
-                                            <ul "wired">
+                                            <button class="Collapsible">Wired</button>
+                                            <ul class="wired">
                                                 {% for pro in wiredPros %}
                                                     <li> {{pro}} </li>
                                                 {% empty %}
-                                                    <li class=empty">Wired Pros Not Found</li>
+                                                    <li class="empty">Wired Pros Not Found</li>
                                                 {% endfor %}
                                             </ul>
                                         </li>
                                         <li>
-                                            <button class="Collapsable">PCMag</button>
-                                            <ul "pcMag">
+                                            <button class="Collapsible">PCMag</button>
+                                            <ul class="pcMag">
                                                 {% for pro in pcMagPros %}
                                                     <li> {{pro}} </li>
                                                 {% empty %}
@@ -114,8 +114,8 @@
                                             </ul>
                                         </li>
                                         <li>
-                                            <button class="Collapsable">Verge</button>
-                                            <ul "verge">
+                                            <button class="Collapsible">Verge</button>
+                                            <ul class="verge">
                                                 {% for pro in vergePros %}
                                                     <li> {{pro}} </li>
                                                 {% empty %}
@@ -127,8 +127,8 @@
                                     <ul class="cons">
                                     <h3>Cons</h3>
                                         <li>
-                                            <button class="Collapsable">CNET</button>
-                                            <ul "cnet">
+                                            <button class="Collapsible">CNET</button>
+                                            <ul class="cnet">
                                                 {% for pro in cnetCons %}
                                                     <li> {{pro}} </li>
                                                 {% empty %}
@@ -137,18 +137,18 @@
                                             </ul>
                                         </li>
                                         <li>
-                                            <button class="Collapsable">Wired</button>
-                                            <ul "wired">
+                                            <button class="Collapsible">Wired</button>
+                                            <ul class="wired">
                                                 {% for pro in wiredCons %}
                                                     <li> {{pro}} </li>
                                                 {% empty %}
-                                                    <li class=empty">Wired Cons Not Found</li>
+                                                    <li class="empty">Wired Cons Not Found</li>
                                                 {% endfor %}
                                             </ul>
                                         </li>
                                         <li>
-                                            <button class="Collapsable">Wired</button>
-                                            <ul "pcMag">
+                                            <button class="Collapsible">Wired</button>
+                                            <ul class="pcMag">
                                                 {% for pro in pcMagCons %}
                                                     <li> {{pro}} </li>
                                                 {% empty %}
@@ -157,8 +157,8 @@
                                             </ul>
                                         </li>
                                         <li>
-                                            <button class="Collapsable">Verge</button>
-                                            <ul "verge">
+                                            <button class="Collapsible">Verge</button>
+                                            <ul class="verge">
                                                 {% for pro in vergeCons %}
                                                     <li> {{pro}} </li>
                                                 {% empty %}
@@ -181,6 +181,26 @@
                 <p>Cell Check - Sophomore Project 2020 &copy;</p>
             </div>
 
+			<script>
+				// Cite this code to W3 schools as an edit of their collapsible button code
+				// https://www.w3schools.com/howto/howto_js_collapsible.asp
+				let coll = document.getElementsByClassName("Collapsible");
+				let i;
+				for (i = 0; i < coll.length; i++) {
+					coll[i].addEventListener("click", function() {
+						console.log("Yep");
+						this.classList.toggle("active");
+						let content = this.nextElementSibling;
+						if (content.style.display != "none"){
+						  content.style.display = "none";
+						} else {
+						  content.style.display = "initial";
+						}
+					  });
+				}
+			</script>
+
             </body>
 
             </html>
+
