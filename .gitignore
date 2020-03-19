@@ -8,3 +8,7 @@ CSI2999/CellCheck/templates/.DS_Store
 CSI2999/CellCheck/templates/CellCheck/.DS_Store
 
 CSI2999/CellCheck/migrations/
+
+db.sqlite3_backup
+
+db.sqlite3_backup2

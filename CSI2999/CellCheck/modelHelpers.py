@@ -13,6 +13,7 @@ def findPhoneID(phoneName, replacements=None):
 
 	!!! Always check the return for the sentinal invalid key value -1 !!! 
 	"""
+	# TODO: Refactor this to use sql like via PhoneName__contains first, then if multiple found, return the one appropriate
 	# Default pairs of string replacements for fuzzy searching. These can be overriden by providing a replacements parameter
 	if replacements == None:
 		replacements = [("x","10"),("10","x"),

@@ -73,4 +73,22 @@ class CNETDetailedScore(models.Model):
 	def __str__(self):
 		return f"CNET Detailed Scores\nDesign: {self.Design}\nFeatures: {self.Features}\nPerformance: {self.Performance}\nCamera: {self.Camera}\nBattery: {self.Battery}"
 
+class UserReview(models.Model):
+	# Store user scores for a given 
+	Site = models.ForeignKey(Site, on_delete=models.CASCADE)
+	Phone = models.ForeignKey(Phone, on_delete=models.CASCADE)
+	UsefulCount = models.IntegerField()
+	Rating = models.DecimalField(max_digits=3, decimal_places=1)
+	IsPositive = models.BooleanField(default = True) # Right now this defaults to true. If we decide to store negative reviews, can be overriden
+	
+	def __str__(self):
+		return f"{self.Site}'s {'positive' if IsPositive else 'negative'} user review for {Self.Phone}"
+	
+class AvgUserScore(models.Model):
+	# Average user scores for a given phone on an ecommerce site
+	Site = models.ForeignKey(Site, on_delete=models.CASCADE)
+	Phone = models.ForeignKey(Phone, on_delete=models.CASCADE)
+	AvgScore = models.DecimalField(max_digits=3, decimal_places=1)
 
+	def __Str__(self):
+		return f"{self.Site}'s average score for {self.Phone} : {self.AvgScore}"
