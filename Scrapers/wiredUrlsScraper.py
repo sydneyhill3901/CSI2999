@@ -1,33 +1,61 @@
-import requests, time
+import requests, time, csv
 from bs4 import BeautifulSoup
 
 
-def getReviews(listPageRootUrl, pageNumber):
+# listPageRootUrl is "https://www.wired.com/category/reviews/phones/page/"
+# pageNumber is the page number on Wired site to scrape
+# write=True writes scraped URLs to CSV file in format phoneName|url
+def getReviews(listPageRootUrl, pageNumber, write=True):
     currentPage = requests.get(listPageRootUrl + str(pageNumber))
-    phoneList = []
+    pageList = []
     soup = BeautifulSoup(currentPage.content, "html.parser")
     x = soup.find_all("li")
     for y in x:
         try:
-            lk = y.find('a', class_='clearfix pad')['href']
+            link = y.find('a', class_='clearfix pad')['href']
         except:
             pass                #easiest way to deal with "None" results
-
         headline = y.find('h2', string=lambda text: 'review' in text.lower())
-        if headline != None:
-            phoneName = headline.text.replace("Review:","").strip()
+        if headline is not None:
+            rowList = []
+            phoneName = headline.text.replace("Review:","").lower().strip()
             if "and" in phoneName:
                 pList = phoneName.replace(" and ", "@").split("@")
                 for z in pList:
-                    phoneList.append(z)
-                    phoneList.append(lk)
+                    jList = []
+                    try:
+                        if int(z[0]) < 10 and int(z[0]) > 3 and z[1:6] == " plus":
+                            z = "apple iphone " + z
+                    except ValueError:
+                        pass
+                    jList.append(z)
+                    jList.append(link)
+                    pageList.append(z)
+                    pageList.append(link)
+                    if write:
+                        writeCsvRow(jList)
             else:
-                phoneList.append(phoneName)
-                phoneList.append(lk)
-    return phoneList
+                try:
+                    if int(phoneName[0]) < 10 and int(phoneName[0]) > 3 and phoneName[1:6] == " plus":
+                        phoneName = "apple iphone " + phoneName
+                except ValueError:
+                    pass
+                rowList.append(phoneName)
+                rowList.append(link)
+                pageList.append(phoneName)
+                pageList.append(link)
+                if write:
+                    writeCsvRow(rowList)
+    return pageList
 
-def getAllReviews(listPageRootUrl, pageNumber, timeSleep):
+
+# pageNumber is the page number on Wired site to start scraping reviews from
+# timeSleep is time to sleep in seconds between making each request
+# if any interruption occurs, function can be called with pageNumber = page after the last page scraped before interruption
+# csv writer will append to csv file as if no interruption occured
+def writeAllReviews(listPageRootUrl, pageNumber, timeSleep):
     fullPhoneList = []
+    startTime = time.time()
     if timeSleep < 3:
         timeSleep = 5
     timeSleep = float(timeSleep)
@@ -35,21 +63,23 @@ def getAllReviews(listPageRootUrl, pageNumber, timeSleep):
         pagePhoneList = getReviews(listPageRootUrl, pageNumber)
         for x in pagePhoneList:
             fullPhoneList.append(x)
+        print("Reviews on page " + str(pageNumber) + ":")
         print(pagePhoneList)
         fancySleep(timeSleep)
         pageNumber += 1
     print("Reached end of reviews.")
+    print("RUNTIME: " + str(time.time() - startTime) + " seconds.")
     return fullPhoneList
 
-def printCsv(fullPhoneList):
-    wOutput = open("WiredURLs.csv", "w+", encoding="utf8")
-    endIndex = len(fullPhoneList)
-    for n in range(int(endIndex/2)):
-        phoneName = str(fullPhoneList[n*2])
-        phoneUrl = str(fullPhoneList[(n*2)+1])
-        wOutput.write(phoneName + "," + phoneUrl + "\n")
+
+# appends one row to CSV
+def writeCsvRow(rowList):
+    dataOutput = open("WiredURLs.csv", "a+", encoding="utf8")
+    writer = csv.writer(dataOutput, delimiter='|', lineterminator="\r", quoting=csv.QUOTE_NONE)
+    writer.writerow(rowList)
 
 
+# for sleeping fancy
 def fancySleep(timeSleep):
     print("sleeping " + str(int(timeSleep)) + " seconds", end="", flush=True)  # https://stackoverflow.com/questions/5598181/multiple-prints-on-the-same-line-in-python
     time.sleep(timeSleep / 4)
@@ -61,4 +91,4 @@ def fancySleep(timeSleep):
     time.sleep(timeSleep / 4)
 
 
-printCsv(getAllReviews("https://www.wired.com/category/reviews/phones/page/", 1, 10))
+writeAllReviews("https://www.wired.com/category/reviews/phones/page/", 1, 10)
