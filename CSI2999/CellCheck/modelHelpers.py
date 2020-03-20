@@ -1,4 +1,5 @@
 from CellCheck.models import *
+import re
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Phone table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def findPhoneID(phoneName, replacements=None):
@@ -41,6 +42,34 @@ def findPhoneID(phoneName, replacements=None):
 				return resultSet[0].id
 		# search failed to find a unique phone w/ that name
 		return -1 
+
+def numeralToArabic(romanNumeral):
+	# Takes in a roman numeral as a string, parses it, returns a the integer corresponding to the
+	# numeral
+	# Return None on failure
+	romanNumeral = romanNumeral.lower() # Just in case it's not already
+	charToInt = {"i":1,"v":5,"x":10,"l":50,"c":100,"d":500,"m":1000}
+	if len(romanNumeral) == 1 and romanNumeral in charToInt.keys():
+		return charToInt[romanNumeral]
+	elif romanNumeral:
+		Sum = 0
+		charList = list(romanNumeral)
+		i = 0
+		length = len(charList)
+		while i < length:
+			try:
+				if i < length -1 and charToInt[charList[i]] < charToInt[charList[i+1]]:	
+					Sum += (charToInt[charList[i+1]] - charToInt[charList[i]])
+					i += 2 
+				else:
+					Sum += charToInt[charList[i]]
+					i += 1	
+			except KeyError: # invalid chars mean invalid numeral
+				return None
+		return Sum
+	else:
+		return None
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Site Table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
 def getSiteIDs():

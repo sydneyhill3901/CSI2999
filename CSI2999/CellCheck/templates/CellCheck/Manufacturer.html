@@ -60,7 +60,7 @@
     <!-- [Content] -->
     <div id="featured-wrapper">
         <div id="featured" class="container">
-            <header>Manufacturers Page</header>
+			<header>{{manufacturer|capfirst}} Phones</header>
 
             <!-- [Buttons if needed]
             
@@ -74,7 +74,7 @@
     <div id="page-wrapper">
         <div id="page" class="container">
             <div id="content">
-                <header>Popular {{phoneName|default:"Manufacturer Name Here"}} Phones</header>
+                <header>Popular {{manufacturer|capfirst|default:"Manufacturer Name Here"}} Phones</header>
 
                 <div id="two-column">
                     <section>
@@ -82,7 +82,7 @@
 
                         <ul class="card-list">
                             <li>
-                                <a class="card" href="../Review/">
+								<a class="card" href="../Review/{{phone1|slugify|default:'noname'}}">
                                     
                                     <h3 class="card-title">{{phone1|default:"Phone 1"}}</h3>
                                     <div class="card-img-cont">
@@ -91,7 +91,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="card" href="../Review/">
+								<a class="card" href="../Review/{{phone2|slugify|default:'noname'}}">
                                     
                                     <h3 class="card-title">{{phone2|default:"Phone 2"}}</h3>
                                     <div class="card-img-cont">
@@ -109,7 +109,7 @@
 
                         <ul class="card-list">
                             <li>
-                                <a class="card" href="../Review/">
+									<a class="card" href="../Review/{{phone3|slugify|default:'noname'}}">
                                     
                                     <h3 class="card-title">{{phone3|default:"Phone 3"}}</h3>
                                     <div class="card-img-cont">
@@ -118,7 +118,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="card" href="../Review/">
+								<a class="card" href="../Review/{{phone4|slugify|default:'noname'}}">
                                     
                                     <h3 class="card-title">{{phone4|default:"Phone 4"}}</h3>
                                     <div class="card-img-cont">
@@ -135,10 +135,12 @@
                 </div>
                 <hr>
                 <div id="more-list">
-                <header>More {{phoneName|default:"Manufacturer Name Here"}} Phones</header>
+                <header>More phones from {{manufacturer|default:"Manufacturer Name Here"}}</header>
                     <ul>
                         {% for phone in phoneList %}
-                            <li> {{phone}} </li>
+							<li> 
+								<a>{{phone}} </a>
+							</li>
                         {% empty %}
                             <li class=empty">Phones Not Found</li>
                         {% endfor %}

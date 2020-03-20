@@ -20,10 +20,16 @@ class Phone(models.Model):
 	# A date field so we know when the phone was released
 	ReleaseDate = models.CharField(max_length = 40)
 
-	
+
+	def getName(self):
+		return self.PhoneName
+
 	def getID(self):
 		return self.id
-
+	
+	def getImageURL(self):
+		return self.phoneImageURL
+	
 	def __str__(self):
 		return self.PhoneName
 

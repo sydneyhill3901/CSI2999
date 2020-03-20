@@ -1,8 +1,11 @@
+{% load static %}
+
+
 <!DOCTYPE html>
 <html lang="">
 
 <head>
-    <link rel="stylesheet" type="text/css" href="./MainCss.css">
+   	<link rel="stylesheet" type="text/css" href="{% static 'CellCheck/MainCss.css' %}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
@@ -23,15 +26,13 @@
 
 <div class="search-container">
 <form action="/action_page.php">
-  <input type="text" placeholder="Search" name=search">
+  <input type="text" placeholder="Search" name="search">
 	<button type="submit">
 	<i class="fa fa-search">
 	submit
 	</i>
 	</button>
-	</form>
-
-	</div>
+	</form>	
 </div>
 
         </div>
@@ -42,7 +43,7 @@
     <!-- [Content] -->
     <div id="featured-wrapper">
         <div id="featured" class="container">
-            <header>Sorry, we currently have no results for '...' </header>
+			<header>Sorry, we currently have no results for {{phoneName|default:"your search"}}. </header>
 
             <!-- [Buttons if needed]
 
@@ -55,7 +56,7 @@
 
     <div id="page-wrapper">
         <div id="page" class="container">
-            <div id="content"
+			<div id="content">
 
                 <p>We don't have quite what you're looking for, but why not take a look at our recommendations we have made for you. Alternatively, shop by manufacture on the links below</p>
 
@@ -66,39 +67,20 @@
                         <h2 class="section-title"></h2>
 
                         <ul class="card-list">
-                            <li>
-                                <a class="card" href="#">
-
-                                    <h3 class="card-title">Apple</h3>
-                                    <div class="card-img-cont">
-                                        <img src="https://thecanadiantechie.files.wordpress.com/2019/09/apple_iphone-11-pro_colors_091019_web.jpg" alt="" class="card-img">
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="card" href="#">
-
-                                    <h3 class="card-title">Samsung</h3>
-                                    <div class="card-img-cont">
-                                        <img src="https://www.samsung.com/global/galaxy/galaxy-fold/images/galaxy-fold_highlight_kv_silver_end.png" alt="" class="card-img">
-                                    </div>
-
-                                </a>
-                            </li>
-                            <li>
-                                <a class="card" href="#">
-
-                                    <h3 class="card-title">Nokia</h3>
-                                    <div class="card-img-cont">
-                                        <img src="https://images.ctfassets.net/wcfotm6rrl7u/4wodxOL4wEHRYluoe2NCmm/5c8a28b1d4d23bdb98884be9b61e1fbc/OG-ifa_2019.jpg" alt="" class="card-img">
-                                    </div>
-
-                                </a>
-                            </li>
+							{% for phone in topCandidates %}
+								<li>
+									<a class="card" href="../Review/{{phone.name|slugify}}">
+										<h3 class= "card-title">{{phone.name}}</h3>
+										<div class="card-img-cont">
+											<img src={{phone.imgURL}} alt="Image Not Found" class="card-img">
+										</div>
+									</a>
+								</li>	
+							{% endfor %}
                         </ul>
 
                     </section>
-                </div
+				</div>
 
     <!-- [Content] -->
     <div id="featured-wrapper2">
@@ -111,30 +93,11 @@
 
             </div>
 	<u1>
-<li>
-<a href=" " target="_blank">Apple</a>
-</li>
-<li>
-<a href=" " target="_blank">Samsung</a>
-</li>
-<li>
-<a href=" " target="_blank">Nokia</a>
-</li>
-<li>
-<a href=" " target="_blank">Google</a>
-</li>
-<li>
-<a href=" " target="_blank">Lenovo</a>
-</li>
-<li>
-<a href=" " target="_blank">Huawei</a>
-</li>
-<li>
-<a href=" " target="_blank">Motorola</a>
-</li>
-<li>
-<a href=" " target="_blank">Lenovo</a>
-</li>
+	{% for phone in candidates %}
+		<li class="candidate-tab">
+			<a href="../Review/{{phone|slugify}}">{{phone}}</a>
+		</li>
+	{% endfor %}
 	</u1>
 
         </div>
