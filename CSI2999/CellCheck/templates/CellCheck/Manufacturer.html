@@ -139,7 +139,7 @@
                     <ul>
                         {% for phone in phoneList %}
 							<li> 
-								<a>{{phone}} </a>
+								<a href="../Review/{{phone|slugify}}">{{phone}}</a>
 							</li>
                         {% empty %}
                             <li class=empty">Phones Not Found</li>
