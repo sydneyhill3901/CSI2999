@@ -12,3 +12,5 @@ CSI2999/CellCheck/migrations/
 db.sqlite3_backup
 
 db.sqlite3_backup2
+
+.idea/
