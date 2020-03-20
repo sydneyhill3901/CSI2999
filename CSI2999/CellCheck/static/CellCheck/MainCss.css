@@ -106,6 +106,11 @@ MENU
     background-color: #026A7D;
 }
 
+.search-container {
+    float: right;
+    padding-top: 75px;
+}
+
 /*********************************************
 SEARCH
 **********************************************/
@@ -200,21 +205,16 @@ CONTENT WRAPPER
 /*********************************************
 BUTTON STYLING
 **********************************************/
-.button {
+button {
     display: inline-block;
-    margin: 0px 10px;
-    padding: 10px 30px;
-    background: #20e1b6;
+    margin: 5px 10px;
+    background: #FFFFFF;
     transition: background-color .25s ease-in-out;
     border-radius: 5px;
-    box-shadow: 0px 0px 0px 5px rgba(255, 255, 255, 1);
-    letter-spacing: 2px;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-family: 'Archivo Narrow', sans-serif;
+    text-decoration: none;;
     font-size: 15px;
     font-weight: 600;
-    color: #FFF;
+
 }
 
 .button:hover {
@@ -247,7 +247,10 @@ CONTENT
 }
 
 #two-column img {
-    padding: 5px;
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
 }
 
 #more-list {
@@ -375,11 +378,11 @@ CARDS
 REVIEW STYLE
 **********************************************/
 #flex-content {
-    height: 100vh;
+
     margin: 2rem;
     display: grid;
     grid-template-columns: 1fr 1.3fr;
-    grid-template-rows: 1.5fr 1fr 1fr;
+
     grid-gap: 20px 20px;
 }
 
@@ -396,7 +399,7 @@ REVIEW STYLE
     background: #fff;
         color: #333;
     border-radius: 5px;
-    overflow: hidden;
+    overflow: visible;
     transition: ease-in all .1s;
     box-shadow:
         0 1px 1px rgba(0, 0, 0, 0.1),
@@ -413,15 +416,24 @@ REVIEW STYLE
 .price-cell {
     grid-row: 1/3;
     grid-column: 2/2;
+    max-height: 700px;
 }
 
 .img-cell {
+    max-height: 460px;
+    width: auto;
+}
 
+.img-cell img{
+    max-height: 450px;
+    width: 500px;
+    margin: 5px;
 }
 
 .rating-cell {
-
+    max-height: 250px;
 }
+
 .AvgScore {
     font-weight: bold;
 
@@ -436,6 +448,7 @@ REVIEW STYLE
     grid-row: 3/3;
     grid-column-start: 1;
     grid-column-end: 3;
+    overflow: visible;
 }
 
 .procon {
@@ -453,23 +466,33 @@ REVIEW STYLE
 .pros {
     flex: 50%;
     list-style-type: none;
+}
+
+.pros li {
+
     border-radius: 12px;
     height: auto;
     width: auto;
     background: #adebad;
     margin: 1rem;
-    padding: 1rem;
 }
 
 .cons  {
     flex: 50%;
     list-style-type: none;
+}
+
+.cons li {
     border-radius: 12px;
     height: auto;
     width: auto;
     background: #ff9999;
     margin: 1rem;
-    padding: 1rem;
+
+}
+
+.procon li ul {
+    padding-bottom: 2px;
 }
 /*********************************************
 MEDIA QUERIES
