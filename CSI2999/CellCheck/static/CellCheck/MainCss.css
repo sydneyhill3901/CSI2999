@@ -111,6 +111,12 @@ MENU
     padding-top: 75px;
 }
 
+.search-container button{
+	background-color: #0000FF;
+	border:none;
+	color:white;
+}
+
 /*********************************************
 SEARCH
 **********************************************/
