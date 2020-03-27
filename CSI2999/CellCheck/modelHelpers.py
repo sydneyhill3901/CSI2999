@@ -43,6 +43,9 @@ def findPhoneID(phoneName, replacements=None):
 		# search failed to find a unique phone w/ that name
 		return -1 
 
+def intToNumeral(num):
+	pass
+
 def numeralToArabic(romanNumeral):
 	# Takes in a roman numeral as a string, parses it, returns a the integer corresponding to the
 	# numeral
