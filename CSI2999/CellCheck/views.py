@@ -6,22 +6,36 @@ from CellCheck.models import Phone, Site, Rating, ProList, ConList, CNETDetailed
 from CellCheck.modelHelpers import findPhoneID, getSiteIDs
 from operator import itemgetter
 import functools
-
+import random
 
 # Create your views here.
 
 def index(request):	
 	# Manufacturer names as strings, associated links to phone images as well. 
 	context = {
-				"Manufacturer1":str(),
-				"Manufacturer2":str(),
-				"Manufacturer3":str(),
-				"Manufacturer4":str(),
-				"phone1URL":str(),
-				"phone2URL":str(),
-				"phone3URL":str(),
-				"phone4URL":str(),
+				"Manufacturer1":"Nokia",
+				"Manufacturer2":"LG",
+				"Manufacturer3":"Apple",
+				"Manufacturer4":"Samsung",
+				"phone1URL":"https://cdn0.vox-cdn.com/hermano/verge/product/image/42/done-nokia-n9.jpg",
+				"phone2URL":"https://cdn0.vox-cdn.com/hermano/verge/product/image/9055/akrales_190404_3345_0192_squ.jpg",
+				"phone3URL":"https://cdn0.vox-cdn.com/hermano/verge/product/image/8579/jbareham_171031_2099_A_0058.jpg",
+				"phone4URL":"https://cdn0.vox-cdn.com/hermano/verge/product/image/8999/akrales_190228_3255_0306_squ.jpg",
 				}	
+
+	popularManufacturers = ["samsung","lg","apple","huwei","nokia","motorola","sony","htc"]
+	phones = Phone.objects
+	# grab 4 manufacturers from the popular list
+	for i in range(4):
+		end = len(popularManufacturers) - 1
+		context[f"Manufacturer{i+1}"] = popularManufacturers.pop(random.randint(0,end))
+		# TODO: Once Sydney's scraper online, change PhoneName_icontains to Manufacturer_icontains
+		phoneList = phones.filter(PhoneName__icontains = context[f"Manufacturer{i+1}"]).order_by("ReleaseDate")
+		if phoneList:
+			context[f"phone{i+1}URL"] = phoneList[0].getImageURL() 
+		else:
+			context[f"phone{i+1}URL"] = ""
+		
 	return render(request, "CellCheck/index.html", context)
 
 def Manufacturer(request, manufacturer = None):
@@ -79,7 +93,6 @@ def Review(request, phoneName = None):
 	phoneID = findPhoneID(phoneName)
 	siteIDMap = getSiteIDs()
 	if phoneID != -1:
-
 		for site,siteID in siteIDMap.items():
 			# Add review scores to context
 			try:
@@ -89,11 +102,19 @@ def Review(request, phoneName = None):
 				continue
 			# Add the Pros
 			try:
-				context[site.lower()+"Pros"] = ProList.objects.filter(Phone = phoneID).get(Site = siteID).Pros.split("\n")
+				#TODO: Temporary change, sydney will format these to split on new-lines
+				if site.lower() == "pcmag":
+					context[site.lower()+"Pros"] = ProList.objects.filter(Phone = phoneID).get(Site = siteID).Pros.split(". ")
+				else:
+					context[site.lower()+"Pros"] = ProList.objects.filter(Phone = phoneID).get(Site = siteID).Pros.split("\n")
 			except Exception as e:
 				continue
 			# Add the Cons
 			try:
+				#TODO: Ditto above
+				if site.lower() == "pcmag":
+					context[site.lower()+"Cons"] = ConList.objects.filter(Phone = phoneID).get(Site = siteID).Cons.split(". ")		
+				else:
 					context[site.lower()+"Cons"] = ConList.objects.filter(Phone = phoneID).get(Site = siteID).Cons.split("\n")		
 			except Exception as e:
 				continue
