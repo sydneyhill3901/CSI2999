@@ -17,6 +17,7 @@ class Phone(models.Model):
 	PCMagURL = models.CharField(max_length = 160) 
 	VergeURL = models.CharField(max_length = 160) 
 	phoneImageURL = models.CharField(max_length = 160)
+	Manufacturer = models.CharField(max_length = 160, default="")
 	# A date field so we know when the phone was released
 	ReleaseDate = models.CharField(max_length = 40)
 
