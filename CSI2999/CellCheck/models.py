@@ -89,7 +89,7 @@ class UserReview(models.Model):
 	IsPositive = models.BooleanField(default = True) # Right now this defaults to true. If we decide to store negative reviews, can be overriden
 	
 	def __str__(self):
-		return f"{self.Site}'s {'positive' if IsPositive else 'negative'} user review for {Self.Phone}"
+		return f"{self.Site}'s {'positive' if self.IsPositive else 'negative'} user review for {self.Phone}"
 	
 class AvgUserScore(models.Model):
 	# Average user scores for a given phone on an ecommerce site
