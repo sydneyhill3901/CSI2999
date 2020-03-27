@@ -17,13 +17,13 @@ def index(request):
 				"Manufacturer2":"LG",
 				"Manufacturer3":"Apple",
 				"Manufacturer4":"Samsung",
-				"phone1URL":"https://cdn0.vox-cdn.com/hermano/verge/product/image/42/done-nokia-n9.jpg",
-				"phone2URL":"https://cdn0.vox-cdn.com/hermano/verge/product/image/9055/akrales_190404_3345_0192_squ.jpg",
-				"phone3URL":"https://cdn0.vox-cdn.com/hermano/verge/product/image/8579/jbareham_171031_2099_A_0058.jpg",
-				"phone4URL":"https://cdn0.vox-cdn.com/hermano/verge/product/image/8999/akrales_190228_3255_0306_squ.jpg",
+				"phone1URL":"",
+				"phone2URL":"",
+				"phone3URL":"",
+				"phone4URL":"",
 				}	
 
-	popularManufacturers = ["samsung","lg","apple","huwei","nokia","motorola","sony","htc"]
+	popularManufacturers = ["samsung","lg","apple","huawei","nokia","motorola","sony","htc"]
 	phones = Phone.objects
 	# grab 4 manufacturers from the popular list
 	for i in range(4):
@@ -32,7 +32,10 @@ def index(request):
 		# TODO: Once Sydney's scraper online, change PhoneName_icontains to Manufacturer_icontains
 		phoneList = phones.filter(PhoneName__icontains = context[f"Manufacturer{i+1}"]).order_by("ReleaseDate")
 		if phoneList:
-			context[f"phone{i+1}URL"] = phoneList[0].getImageURL() 
+			j = 0
+			while not context[f"phone{i+1}URL"]	and j < len(phoneList):
+				context[f"phone{i+1}URL"] = phoneList[j].getImageURL() 
+				j += 1
 		else:
 			context[f"phone{i+1}URL"] = ""
 		
