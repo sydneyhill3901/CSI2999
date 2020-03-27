@@ -211,20 +211,53 @@ CONTENT WRAPPER
 /*********************************************
 BUTTON STYLING
 **********************************************/
-button {
-    display: inline-block;
-    margin: 5px 10px;
-    background: #FFFFFF;
-    transition: background-color .25s ease-in-out;
-    border-radius: 5px;
-    text-decoration: none;;
-    font-size: 15px;
-    font-weight: 500;
 
+.pros  .Collapsible {
+
+  width:100%;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 5px;
+    padding: 3px 10px;
 }
 
-.Collapsible:hover {
-    background-color: #efefef;
+.cons  .Collapsible {
+
+    width:100%;
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    background-color: #f44336;
+    border: none;
+    border-radius: 5px;
+    padding: 3px 10px;
+}
+
+.pros  .Collapsible:hover {
+    background-color: #46a049;
+}
+
+.cons  .Collapsible:hover {
+    background-color: #da190b;
+}
+
+.Collapsible:after {
+  content: '\02795';
+  font-size: 13px;
+  color: black;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2796";
 }
 
 .button-small {

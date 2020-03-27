@@ -220,7 +220,7 @@
 						let collapseList = coll[i].nextElementSibling;
 						collapseList.style.display = "none"
 						coll[i].addEventListener("click", function() {	
-								console.log("hi")
+								this.classList.toggle("active");
 								let content = this.nextElementSibling;
 								if (content.style.display != "none"){
 								  content.style.display = "none";
