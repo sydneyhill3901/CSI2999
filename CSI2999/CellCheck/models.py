@@ -77,6 +77,21 @@ class CNETDetailedScore(models.Model):
 	Camera = models.PositiveSmallIntegerField()
 	Battery = models.PositiveSmallIntegerField()
 
+	def getDesign(self):
+		return self.Design
+
+	def getFeatures(self):
+		return self.Features
+
+	def getPerformance(self):
+		return self.Performance
+
+	def getCamera(self):
+		return self.Camera
+
+	def getBattery(self):
+		return self.Battery
+
 	def __str__(self):
 		return f"CNET Detailed Scores\nDesign: {self.Design}\nFeatures: {self.Features}\nPerformance: {self.Performance}\nCamera: {self.Camera}\nBattery: {self.Battery}"
 

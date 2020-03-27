@@ -89,7 +89,12 @@ def Review(request, phoneName = None):
 				"wiredCons":list(str()),
 				"pcMagPros":list(str()),
 				"pcMagCons":list(str()),
-				"cnetSubScores":dict()
+				"cnetSubScores":dict(),
+				"cnetDesign":str(),
+				"cnetFeatures":str(),
+				"cnetPerformance":str(),
+				"cnetCamera":str(),
+				"cnetBattery":str()
 				}
 	phoneName = phoneName.replace("-"," ").capitalize()
 	context["phoneName"] = phoneName
@@ -126,9 +131,34 @@ def Review(request, phoneName = None):
 			except Exception as e:
 				continue
 
+	try:
+		context["cnetDesign"] = CNETDetailedScore.objects.filter(phone = phoneID).get(phone = phoneID).getDesign()
+	except Exception as e:
+		context["cnetDesign"] = "No Score"
+
+	try:
+		context["cnetFeatures"] = CNETDetailedScore.objects.filter(phone = phoneID).get(phone = phoneID).getFeatures()
+	except Exception as e:
+		context["cnetFeatures"] = "No Score"
+
+	try:
+		context["cnetPerformance"] = CNETDetailedScore.objects.filter(phone = phoneID).get(phone = phoneID).getPerformance()
+	except Exception as e:
+		context["cnetPerformance"] = "No Score"
+
+	try:
+		context["cnetCamera"] = CNETDetailedScore.objects.filter(phone = phoneID).get(phone = phoneID).getCamera()
+	except Exception as e:
+		context["cnetCamera"] = "No Score"
+
+	try:
+		context["cnetBattery"] = CNETDetailedScore.objects.filter(phone = phoneID).get(phone = phoneID).getBattery()
+	except Exception as e:
+		context["cnetBattery"] = "No Score"
+
 		# Add average to context
-		if context["scores"]:
-			context["scores"].append(("Average",sum(list(map(itemgetter(1),context["scores"])))/len(context["scores"])))
+	if context["scores"]:
+		context["scores"].append(("Average",sum(list(map(itemgetter(1),context["scores"])))/len(context["scores"])))
 
 		return render(request, "CellCheck/Review.html", context)
 	else:
