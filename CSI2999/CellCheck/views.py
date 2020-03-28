@@ -6,22 +6,39 @@ from CellCheck.models import Phone, Site, Rating, ProList, ConList, CNETDetailed
 from CellCheck.modelHelpers import findPhoneID, getSiteIDs
 from operator import itemgetter
 import functools
-
+import random
 
 # Create your views here.
 
 def index(request):	
 	# Manufacturer names as strings, associated links to phone images as well. 
 	context = {
-				"Manufacturer1":str(),
-				"Manufacturer2":str(),
-				"Manufacturer3":str(),
-				"Manufacturer4":str(),
-				"phone1URL":str(),
-				"phone2URL":str(),
-				"phone3URL":str(),
-				"phone4URL":str(),
+				"Manufacturer1":"Nokia",
+				"Manufacturer2":"LG",
+				"Manufacturer3":"Apple",
+				"Manufacturer4":"Samsung",
+				"phone1URL":"",
+				"phone2URL":"",
+				"phone3URL":"",
+				"phone4URL":"",
 				}	
+
+	popularManufacturers = ["samsung","lg","apple","huawei","nokia","motorola","sony","htc"]
+	phones = Phone.objects
+	# grab 4 manufacturers from the popular list
+	for i in range(4):
+		end = len(popularManufacturers) - 1
+		context[f"Manufacturer{i+1}"] = popularManufacturers.pop(random.randint(0,end))
+		# TODO: Once Sydney's scraper online, change PhoneName_icontains to Manufacturer_icontains
+		phoneList = phones.filter(PhoneName__icontains = context[f"Manufacturer{i+1}"]).order_by("ReleaseDate")
+		if phoneList:
+			j = 0
+			while not context[f"phone{i+1}URL"]	and j < len(phoneList):
+				context[f"phone{i+1}URL"] = phoneList[j].getImageURL() 
+				j += 1
+		else:
+			context[f"phone{i+1}URL"] = ""
+		
 	return render(request, "CellCheck/index.html", context)
 
 def Manufacturer(request, manufacturer = None):
@@ -72,14 +89,18 @@ def Review(request, phoneName = None):
 				"wiredCons":list(str()),
 				"pcMagPros":list(str()),
 				"pcMagCons":list(str()),
-				"cnetSubScores":dict()
+				"cnetSubScores":dict(),
+				"cnetDesign":str(),
+				"cnetFeatures":str(),
+				"cnetPerformance":str(),
+				"cnetCamera":str(),
+				"cnetBattery":str()
 				}
 	phoneName = phoneName.replace("-"," ").capitalize()
 	context["phoneName"] = phoneName
 	phoneID = findPhoneID(phoneName)
 	siteIDMap = getSiteIDs()
 	if phoneID != -1:
-
 		for site,siteID in siteIDMap.items():
 			# Add review scores to context
 			try:
@@ -89,11 +110,19 @@ def Review(request, phoneName = None):
 				continue
 			# Add the Pros
 			try:
-				context[site.lower()+"Pros"] = ProList.objects.filter(Phone = phoneID).get(Site = siteID).Pros.split("\n")
+				#TODO: Temporary change, sydney will format these to split on new-lines
+				if site.lower() == "pcmag":
+					context[site.lower()+"Pros"] = ProList.objects.filter(Phone = phoneID).get(Site = siteID).Pros.split(". ")
+				else:
+					context[site.lower()+"Pros"] = ProList.objects.filter(Phone = phoneID).get(Site = siteID).Pros.split("\n")
 			except Exception as e:
 				continue
 			# Add the Cons
 			try:
+				#TODO: Ditto above
+				if site.lower() == "pcmag":
+					context[site.lower()+"Cons"] = ConList.objects.filter(Phone = phoneID).get(Site = siteID).Cons.split(". ")		
+				else:
 					context[site.lower()+"Cons"] = ConList.objects.filter(Phone = phoneID).get(Site = siteID).Cons.split("\n")		
 			except Exception as e:
 				continue
@@ -102,9 +131,34 @@ def Review(request, phoneName = None):
 			except Exception as e:
 				continue
 
+	try:
+		context["cnetDesign"] = CNETDetailedScore.objects.filter(phone = phoneID).get(phone = phoneID).getDesign()
+	except Exception as e:
+		context["cnetDesign"] = "No Score"
+
+	try:
+		context["cnetFeatures"] = CNETDetailedScore.objects.filter(phone = phoneID).get(phone = phoneID).getFeatures()
+	except Exception as e:
+		context["cnetFeatures"] = "No Score"
+
+	try:
+		context["cnetPerformance"] = CNETDetailedScore.objects.filter(phone = phoneID).get(phone = phoneID).getPerformance()
+	except Exception as e:
+		context["cnetPerformance"] = "No Score"
+
+	try:
+		context["cnetCamera"] = CNETDetailedScore.objects.filter(phone = phoneID).get(phone = phoneID).getCamera()
+	except Exception as e:
+		context["cnetCamera"] = "No Score"
+
+	try:
+		context["cnetBattery"] = CNETDetailedScore.objects.filter(phone = phoneID).get(phone = phoneID).getBattery()
+	except Exception as e:
+		context["cnetBattery"] = "No Score"
+
 		# Add average to context
-		if context["scores"]:
-			context["scores"].append(("Average",sum(list(map(itemgetter(1),context["scores"])))/len(context["scores"])))
+	if context["scores"]:
+		context["scores"].append(("Average",sum(list(map(itemgetter(1),context["scores"])))/len(context["scores"])))
 
 		return render(request, "CellCheck/Review.html", context)
 	else:

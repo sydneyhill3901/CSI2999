@@ -35,13 +35,13 @@ def Main():
             rating = i[2]
             PlacePhonesInDatabase(phone.strip().lower(), url, conn, c)
             PlaceRatingsInDatabase(phone.strip().lower(), rating, conn, c)
-        #c.execute("DELETE FROM CellCheck_Site")
-        #conn.commit()
-        #c.execute("DELETE FROM CellCheck_Phone")
-        #conn.commit()
-        #c.execute("DELETE FROM CellCheck_Rating")
-        #conn.commit()
-        conn.close()
+        # c.execute("DELETE FROM CellCheck_Site")
+        # conn.commit()
+        # c.execute("DELETE FROM CellCheck_Phone")
+        # conn.commit()
+        # c.execute("DELETE FROM CellCheck_Rating")
+        # conn.commit()
+        # conn.close()
     except Exception as e:
         print(f"Error syncing to Database \n{e}")
     PrintTime("End Time: ")
@@ -149,14 +149,16 @@ def PlacePhonesInDatabase(phone, url, conn, c):
     c.execute("SELECT count(*) FROM CellCheck_Phone WHERE PhoneName = ?", (phone.strip().lower(),))
     exists = c.fetchone()[0]
     if exists == 0:
-        c.execute("INSERT INTO CellCheck_Phone (PhoneName, CnetURL, WiredURL, PCMagUrl, VergeURL, ReleaseDate, PhoneImageURL)"
-                  " values (?, ?, ?, ?, ?, ?, ?)",
-                  (phone.strip().lower(), url, "", "", "", "",""))
+        c.execute("INSERT INTO CellCheck_Phone (PhoneName, CnetURL, WiredURL, PCMagUrl, VergeURL, ReleaseDate, PhoneImageUrl, Manufacturer)"
+                  " values (?, ?, ?, ?, ?, ?, ?, ?)",
+                  (phone.strip().lower(), url, "", "", "", "", "", ""))
         conn.commit()
+        print(f"{phone} was added to the Database")
     else:
         c.execute("UPDATE CellCheck_Phone SET CnetURL = ? AND ReleaseDate = '' WHERE PhoneName = ?",
                   (url, phone.strip().lower(),))
         conn.commit()
+        print(f"{phone} was updated in the Database")
 
 
 # Source: https://docs.python.org/3/library/sqlite3.html
@@ -172,9 +174,11 @@ def PlaceRatingsInDatabase(phone, rating, conn, c):
                   " values (?, ?, ?)",
                   (rating, phoneid, siteid))
         conn.commit()
+        print(f"{phone} with a Rating Score of: {rating} has been added to the Database")
     else:
         c.execute("UPDATE CellCheck_Rating SET Rating = ? WHERE Phone_id = ? AND Site_id = ?", (rating, phoneid, siteid))
         conn.commit()
+        print(f"{phone} with a Rating Score of {rating} has been updated in the database")
 
 
 PhonesUrlRatingList = []

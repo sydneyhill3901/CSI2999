@@ -28,7 +28,7 @@
             <input type="text" placeholder="Search" name=search">
 	        <button type="Search Phone">
 	<i class="fa fa-search">
-	submit
+	Search Phones
 	</i>
 	</button>
                 	<button type="manufacture">
@@ -84,7 +84,7 @@
 
                         <ul class="card-list">
                             <li>
-                                <a class="card" href="Manufacturer/">
+								<a class="card" href="Manufacturer/{{Manufacturer1|lower|slugify}}">
                                     <!-- Might need to add class to finalize css with an image -->
                                     <h3 class="card-title">{{Manufacturer1|default:"Manufacturer Name Here"}}</h3>
                                     <div class="card-img-cont">
@@ -93,7 +93,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="card" href="Manufacturer/">
+                                <a class="card" href="Manufacturer/{{Manufacturer2|lower|slugify}}">
                                     
                                     <h3 class="card-title">{{Manufacturer2|default:"Manufacturer Name Here"}}</h3>
                                     <div class="card-img-cont">
@@ -111,7 +111,7 @@
 
                         <ul class="card-list">
                             <li>
-                                <a class="card" href="Manufacturer/">
+                                <a class="card" href="Manufacturer/{{Manufacturer3|lower|slugify}}">
                                     
                                     <h3 class="card-title">{{Manufacturer3|default:"Manufacturer Name Here"}}</h3>
                                     <div class="card-img-cont">
@@ -120,7 +120,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="card" href="Manufacturer/">
+                                <a class="card" href="Manufacturer/{{Manufacturer4|lower|slugify}}">
                                     
                                     <h3 class="card-title">{{Manufacturer4|default:"Manufacturer Name Here"}}</h3>
                                     <div class="card-img-cont">

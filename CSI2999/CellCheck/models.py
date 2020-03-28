@@ -17,6 +17,7 @@ class Phone(models.Model):
 	PCMagURL = models.CharField(max_length = 160) 
 	VergeURL = models.CharField(max_length = 160) 
 	phoneImageURL = models.CharField(max_length = 160)
+	Manufacturer = models.CharField(max_length = 160, default="")
 	# A date field so we know when the phone was released
 	ReleaseDate = models.CharField(max_length = 40)
 
@@ -76,6 +77,21 @@ class CNETDetailedScore(models.Model):
 	Camera = models.PositiveSmallIntegerField()
 	Battery = models.PositiveSmallIntegerField()
 
+	def getDesign(self):
+		return self.Design
+
+	def getFeatures(self):
+		return self.Features
+
+	def getPerformance(self):
+		return self.Performance
+
+	def getCamera(self):
+		return self.Camera
+
+	def getBattery(self):
+		return self.Battery
+
 	def __str__(self):
 		return f"CNET Detailed Scores\nDesign: {self.Design}\nFeatures: {self.Features}\nPerformance: {self.Performance}\nCamera: {self.Camera}\nBattery: {self.Battery}"
 
@@ -88,7 +104,7 @@ class UserReview(models.Model):
 	IsPositive = models.BooleanField(default = True) # Right now this defaults to true. If we decide to store negative reviews, can be overriden
 	
 	def __str__(self):
-		return f"{self.Site}'s {'positive' if IsPositive else 'negative'} user review for {Self.Phone}"
+		return f"{self.Site}'s {'positive' if self.IsPositive else 'negative'} user review for {self.Phone}"
 	
 class AvgUserScore(models.Model):
 	# Average user scores for a given phone on an ecommerce site
