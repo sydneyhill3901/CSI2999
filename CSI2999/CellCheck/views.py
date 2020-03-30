@@ -54,6 +54,7 @@ def Manufacturer(request, manufacturer = None):
 				"phone4":str(),
 				"phone4URL":str(),
 				"phoneList":[],
+                                "expandedPhoneList":[],
 				}
 	if manufacturer:
 		context["manufacturer"] = manufacturer
@@ -69,7 +70,9 @@ def Manufacturer(request, manufacturer = None):
 			context[f"phone{i+1}URL"] = manufacPhones[i].getImageURL() 
 		# phoneList is remaining phones
 		if len(manufacPhones) > 4:
-			context["phoneList"] = list(map(lambda phone: phone.getName(),manufacPhones[4:]))
+			context["phoneList"] = list(map(lambda phone: phone.getName(),manufacPhones[4:9]))
+		if len(manufacPhones) > 6:
+                   context["expandedPhoneList"] = list(map(lambda phone: phone.getName(),manufacPhones[9:]))
 
 		
 

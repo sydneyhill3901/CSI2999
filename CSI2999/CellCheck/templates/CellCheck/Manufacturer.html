@@ -144,6 +144,16 @@
                         {% empty %}
                             <li class=empty">Phones Not Found</li>
                         {% endfor %}
+					</ul>
+					<button class="Collapsible" style="margin-left:75px;">Expand Phone List</button>
+                    <ul class="collapsingList">
+                        {% for phone in expandedPhoneList %}
+							<li> 
+								<a href="../Review/{{phone|slugify}}">{{phone}}</a>
+							</li>
+                        {% empty %}
+                            <li class=empty">Phones Not Found</li>
+                        {% endfor %}
 
                     </ul>
                     </div>
@@ -156,6 +166,26 @@
         <div id="copyright" class="container">
             <p>Cell Check - Sophomore Project 2020 &copy;</p>
         </div>
+		
+		<script>
+				// Cite this code to W3 schools as an edit of their collapsible button code
+				// https://www.w3schools.com/howto/howto_js_collapsible.asp
+				let coll = document.getElementsByClassName("Collapsible");
+				let i;
+				for (i = 0; i < coll.length; i++) {
+						let collapseList = coll[i].nextElementSibling;
+						collapseList.style.display = "none"
+						coll[i].addEventListener("click", function() {	
+								this.classList.toggle("active");
+								let content = this.nextElementSibling;
+								if (content.style.display != "none"){
+								  content.style.display = "none";
+								} else {
+								  content.style.display = "block";
+								}
+					  });
+				}
+			</script>
 
 </body>
 
