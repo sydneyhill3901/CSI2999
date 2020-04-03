@@ -4,7 +4,7 @@
 <html lang="en">
 
 <head>
-		<link rel="stylesheet" type="text/css" href="{% static 'CellCheck/MainCss.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'CellCheck/MainCss.css' %}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
@@ -25,13 +25,14 @@
             </div>
 
             <div class="search-container">
-<form action="/action_page.php">
-  <input type="text" placeholder="Search" name=search">
-	<button type="submit">
-	<i class="fa fa-search">
-	submit
-	</i>
-	</button>
+	<form id="search" action="../Search/" method="post">
+		{% csrf_token %}
+  		<input type="text" placeholder="Search" name="searchString">
+		<button name="phone" type="submit">
+			<i class="fa fa-search">
+			phone
+			</i>
+		</button>
 	</form>
 
 	</div>
