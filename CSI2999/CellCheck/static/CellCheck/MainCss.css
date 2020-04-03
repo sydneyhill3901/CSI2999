@@ -473,14 +473,24 @@ REVIEW STYLE
     max-height: 250px;
 }
 
+.ratings {
+    display: flex;
+}
+
 .AvgScore {
     font-weight: bold;
-
 }
 
 .rating-cell ul li{
     list-style-type: none;
-    padding-left: 2rem;
+}
+
+.rating-scores {
+    flex: 50%;
+}
+
+.cnet-scores {
+    flex: 50%;
 }
 
 .review-cell {

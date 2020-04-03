@@ -78,37 +78,44 @@
                                 <h3>Prices</h3>
                                 <hr/>
                             </div>
-							<div class="cell img-cell"><img src={{imageURL|default:"#"}} alt="No&nbsp;Phone&nbsp;Image&nbsp;Found"></div>
+							<div class="cell img-cell">
+                                <img src= "{{ imageURL }}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
+                                <p>{{imageURL}}</p>
+                            </div>
 							<div class="cell rating-cell">
 								<h3>Ratings</h3>
-                                    <hr/>
-								<ul>
-									{% for site, score in scores %}
-										{%if "Average" in site  %}
-											<li class="AvgScore"> {{site}} : {{score|floatformat:1}} </li>
-										{% else %}
-											<li> {{site}} | {{score|floatformat:1}} </li>
-										{% endif %}
-									{% empty %}
-									<li class="No_Scores">No Scores Found</li>
-									{% endfor %}
-									
-									{% if cnetDesign %}
-									<li>Design: {{cnetDesign}}</li>
-									{% endif %}
-									{% if cnetFeatures %}
-									<li>Features: {{cnetFeatures}}</li>
-									{% endif %}
-									{% if cnetPerformance %}
-									<li>Performance: {{cnetPerformance}}</li>
-									{% endif %}
-									{% if cnetCamera %}
-									<li>Camera: {{cnetCamera}}</li>
-									{% endif %}
-									{% if cnetBattery %}
-									<li>Battery: {{cnetBattery}}</li>
-									{% endif %}
-								</ul>
+                                <hr/>
+                                    <div class="ratings">
+                                        <ul class="rating-scores">
+                                            {% for site, score in scores %}
+                                                {%if "Average" in site  %}
+                                                    <li class="AvgScore"> {{site}} : {{score|floatformat:1}} </li>
+                                                {% else %}
+                                                    <li> {{site}} | {{score|floatformat:1}} </li>
+                                                {% endif %}
+                                            {% empty %}
+                                            <li class="No_Scores">No Scores Found</li>
+                                            {% endfor %}
+                                        </ul>
+                                        <ul class="cnet-scores">
+
+                                            {% if cnetDesign %}
+                                            <li>Design: {{cnetDesign}}</li>
+                                            {% endif %}
+                                            {% if cnetFeatures %}
+                                            <li>Features: {{cnetFeatures}}</li>
+                                            {% endif %}
+                                            {% if cnetPerformance %}
+                                            <li>Performance: {{cnetPerformance}}</li>
+                                            {% endif %}
+                                            {% if cnetCamera %}
+                                            <li>Camera: {{cnetCamera}}</li>
+                                            {% endif %}
+                                            {% if cnetBattery %}
+                                            <li>Battery: {{cnetBattery}}</li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
 							</div>
 							<div class="cell review-cell"><h3>Reviews</h3>
                             <hr/>
@@ -159,7 +166,7 @@
                                     <ul class="cons">
                                     <h3>Cons</h3>
                                         <li>
-                                            <button class="Collapsible">CNET</button>
+                                            <button class="Collapsible">CNET </button>
                                             <ul class="cnet collapsingList">
                                                 {% for pro in cnetCons %}
                                                     <li> {{pro}} </li>
