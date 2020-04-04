@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.template import loader
 from CellCheck.models import Phone, Site, Rating, ProList, ConList, CNETDetailedScore
@@ -54,6 +54,7 @@ def Manufacturer(request, manufacturer = None):
 				"phone4":str(),
 				"phone4URL":str(),
 				"phoneList":[],
+                                "expandedPhoneList":[],
 				}
 	if manufacturer:
 		context["manufacturer"] = manufacturer
@@ -69,12 +70,12 @@ def Manufacturer(request, manufacturer = None):
 			context[f"phone{i+1}URL"] = manufacPhones[i].getImageURL() 
 		# phoneList is remaining phones
 		if len(manufacPhones) > 4:
-			context["phoneList"] = list(map(lambda phone: phone.getName(),manufacPhones[4:]))
-
-		
-
+			context["phoneList"] = list(map(lambda phone: phone.getName(),manufacPhones[4:9]))
+		if len(manufacPhones) > 6:
+                   context["expandedPhoneList"] = list(map(lambda phone: phone.getName(),manufacPhones[9:]))
 
 	return render(request, "CellCheck/Manufacturer.html", context)
+
 
 def Review(request, phoneName = None):
 	# scores: List of ("name",fltScore) pairs
@@ -165,9 +166,6 @@ def Review(request, phoneName = None):
 		return redirect(NotFound, phone = phoneName.lower().replace(" ","-"))
 
 
-
-
-
 def NotFound(request, phone = None):
 	# TODO: Run this idea by Kemal, rather than All Brands, it's phones with similar names/names searched phone IN name
 	# 		First 3 results can have their images rendered into the 3 picture cards
@@ -196,6 +194,22 @@ def NotFound(request, phone = None):
 				#context["topCandidateImages"].append(candidates[i].getImageURL()) 
 				
 	return render(request, "CellCheck/phonenotfound.html", context)
+
+def Search(request):
+	"""
+	Searching for phones or by manufacturer name is handled via post requests sent to this view.
+	"""
+	searchString = request.POST["searchString"].lower()
+	if	"manufacturer" in request.POST.keys():
+		return redirect(Manufacturer, manufacturer = searchString)
+	elif "phone" in request.POST.keys():
+		return redirect(Review, phoneName = searchString)
+	else:
+		raise Http404("Search type not found")	
+
+
+	
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Helpers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def makeNamesList(phoneSet):

@@ -25,13 +25,19 @@
             </div>
 
 <div class="search-container">
-<form action="/action_page.php">
-  <input type="text" placeholder="Search" name="search">
-	<button type="submit">
-	<i class="fa fa-search">
-	submit
-	</i>
-	</button>
+	<form method="post" action="../Search/">
+		{% csrf_token %}
+		<input type="text" placeholder="Search" name="searchString">
+		<button name="phone" type="submit">
+			<i class="fa fa-search">
+			Phones
+			</i>
+		</button>
+		<button name="manufacturer" type="submit">
+			<i class="fa fa-search">
+			Manufacturers
+			</i>
+		</button>
 	</form>	
 </div>
 

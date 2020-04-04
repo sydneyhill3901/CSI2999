@@ -14,3 +14,5 @@ db.sqlite3_backup
 db.sqlite3_backup2
 
 .idea/
+
+PriceAPIKey
