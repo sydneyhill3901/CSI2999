@@ -500,8 +500,26 @@ REVIEW STYLE
     overflow: visible;
 }
 
+.reviewsv2 {
+    grid-row: 3/3;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    overflow: visible;
+}
+
 .procon {
     display: flex;
+}
+
+.bestsprint {
+    display: flex;
+}
+
+.bestsprint h3{
+    font-size: 1.25rem;
+    text-align: left;
+    margin: 0;
+    padding: 0;
 }
 
 .procon h3 {
@@ -526,6 +544,10 @@ REVIEW STYLE
     margin: 1rem;
 }
 
+.best {
+    flex: 50%;
+}
+
 .cons  {
     flex: 50%;
     list-style-type: none;
@@ -539,12 +561,20 @@ REVIEW STYLE
     margin: 1rem;
 }
 
+.sprint {
+    flex: 50%;
+}
+
 .procon ul li ul li {
     padding-bottom: 7px;
     list-style-type: square;
     margin-left: 40px;
+}
 
-
+.bestsprint {
+    padding-bottom: 7px;
+    list-style-type:square;
+    margin-left: 40px;
 }
 
 
