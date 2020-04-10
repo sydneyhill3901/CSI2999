@@ -18,3 +18,5 @@ db.sqlite3_backup2
 PriceAPIKey
 
 *.pyc
+
+Pipfile.lock

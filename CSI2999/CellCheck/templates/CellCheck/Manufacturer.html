@@ -92,7 +92,11 @@
                                     
                                     <h3 class="card-title">{{phone1|default:"Phone 1"}}</h3>
                                     <div class="card-img-cont">
+										{% if phone1URL %}
                                         <img src={{phone1URL|default:"#"}} alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
+										{% else %}
+										<img src="{% static 'CellCheck/GenericPhone.png'%}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
+										{% endif %}
                                     </div>
                                 </a>
                             </li>
@@ -101,7 +105,11 @@
                                     
                                     <h3 class="card-title">{{phone2|default:"Phone 2"}}</h3>
                                     <div class="card-img-cont">
+                                        {% if phone2URL %}
                                         <img src={{phone2URL|default:"#"}} alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
+										{% else %}
+										<img src="{% static 'CellCheck/GenericPhone.png'%}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
+										{% endif %}
                                     </div>
 
                                 </a>
@@ -119,8 +127,12 @@
                                     
                                     <h3 class="card-title">{{phone3|default:"Phone 3"}}</h3>
                                     <div class="card-img-cont">
+                                        {% if phone3URL %}
                                         <img src={{phone3URL|default:"#"}} alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
-                                    </div>
+										{% else %}
+										<img src="{% static 'CellCheck/GenericPhone.png'%}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
+										{% endif %}
+									</div>
                                 </a>
                             </li>
                             <li>
@@ -128,9 +140,12 @@
                                     
                                     <h3 class="card-title">{{phone4|default:"Phone 4"}}</h3>
                                     <div class="card-img-cont">
+                                        {% if phone4URL %}
                                         <img src={{phone4URL|default:"#"}} alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
-                                    </div>
-
+										{% else %}
+										<img src="{% static 'CellCheck/GenericPhone.png'%}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
+										{% endif %}
+									</div>
                                 </a>
                             </li>
 

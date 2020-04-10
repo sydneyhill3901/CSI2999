@@ -13,6 +13,7 @@ lxml = "*"
 mysql-connector-python = "*"
 ipython = "*"
 uwsgi = "*"
+selenium = "*"
 
 [requires]
 python_version = "3.8"
