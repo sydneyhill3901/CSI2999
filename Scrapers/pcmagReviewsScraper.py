@@ -210,6 +210,8 @@ def pcmagScrapeAndInsert(urlCsv, timeSleep, selectiveScrape=True, backupCsvWrite
     for row in sourceFile:
         x = row.split("|")
         phoneName = x[0].strip().lower()
+        if "+" in phoneName:
+            phoneName = phoneName.replace("+", " plus")
         url = x[1].strip()
         print(phoneName)
         print(url)
@@ -247,17 +249,22 @@ def pcmagScrapeAndInsert(urlCsv, timeSleep, selectiveScrape=True, backupCsvWrite
 # review is of type PCMagReview or LoadReview
 def insertPhone(con, review):
     cur = con.cursor()
-    cur.execute("SELECT * FROM CellCheck_Phone WHERE PhoneName=?", (review.phoneName.lower().strip(),))
+    cur.execute("SELECT * FROM CellCheck_Phone WHERE PhoneName=?", (review.phoneName,))
     existingEntry = cur.fetchone()
     if existingEntry is not None:
         sqlUpdate = "UPDATE CellCheck_Phone SET PCMagURL=? WHERE phoneName=?"
         cur.execute(sqlUpdate, (review.url.strip(), review.phoneName.lower().strip()))
-        cur.execute("SELECT id FROM CellCheck_Phone WHERE phoneName=?", (review.phoneName.lower().strip(),))
+        cur.execute("SELECT PhoneImageUrl FROM CellCheck_Phone WHERE PhoneName=?", (review.phoneName,))
+        phoneImg = cur.fetchone()[0]
+        if phoneImg == "":
+            cur.execute("UPDATE CellCheck_Phone SET PhoneImageUrl=? WHERE PhoneName=?", (review.image, review.phoneName,))
+        cur.execute("SELECT id FROM CellCheck_Phone WHERE phoneName=?", (review.phoneName,))
         phoneId = cur.fetchone()[0]
         print("Phone " + str(phoneId) + " " + review.phoneName.lower().strip()+ " updated")
+
     else:
-        sqlInsert = "INSERT INTO CellCheck_Phone (PhoneName,CnetURL,WiredURL,PCMagURL,VergeURL,PhoneImageUrl,ReleaseDate) VALUES(?,?,?,?,?,?,?)"
-        cur.execute(sqlInsert, (review.phoneName.lower().strip(), "", "", review.url, "", "", ""))
+        sqlInsert = "INSERT INTO CellCheck_Phone (PhoneName,CnetURL,WiredURL,PCMagURL,VergeURL,PhoneImageUrl,Manufacturer,ReleaseDate) VALUES(?,?,?,?,?,?,?,?)"
+        cur.execute(sqlInsert, (review.phoneName, "", "", review.url, "", review.image, "", ""))
         cur.execute("SELECT id FROM CellCheck_Phone WHERE PhoneName=?", (review.phoneName.lower().strip(),))
         phoneId = cur.fetchone()[0]
         print("Phone " + str(phoneId) + " " + review.phoneName.lower().strip() + " added")

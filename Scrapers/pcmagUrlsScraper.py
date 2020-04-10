@@ -21,6 +21,8 @@ def getReviews(listPageRootUrl, pageNumber, write=True):
             if "(" in phoneName and ")" in phoneName:
                 q = phoneName.split("(")
                 phoneName = q[0].strip()
+            if "+" in phoneName:
+                phoneName = phoneName.replace("+", " plus")
             rowList.append(phoneName)
             rowList.append(link)
             pageList.append(phoneName)

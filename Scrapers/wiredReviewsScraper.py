@@ -300,8 +300,8 @@ def insertPhone(con, review):
         phoneId = cur.fetchone()[0]
         print("Phone " + str(phoneId) + " " + review.phoneName.lower().strip()+ " updated")
     else:
-        sqlInsert = "INSERT INTO CellCheck_Phone (PhoneName,CnetURL,WiredURL,PCMagURL,VergeURL,PhoneImageUrl,ReleaseDate) VALUES(?,?,?,?,?,?,?)"
-        cur.execute(sqlInsert, (review.phoneName.lower().strip(), "", review.url, "", "", "", ""))
+        sqlInsert = "INSERT INTO CellCheck_Phone (PhoneName,CnetURL,WiredURL,PCMagURL,VergeURL,PhoneImageUrl,Manufacturer,ReleaseDate) VALUES(?,?,?,?,?,?,?,?)"
+        cur.execute(sqlInsert, (review.phoneName.lower().strip(), "", review.url, "", "", "", "", ""))
         cur.execute("SELECT id FROM CellCheck_Phone WHERE PhoneName=?", (review.phoneName.lower().strip(),))
         phoneId = cur.fetchone()[0]
         print("Phone " + str(phoneId) + " " + review.phoneName.lower().strip() + " added")

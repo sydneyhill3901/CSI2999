@@ -18,22 +18,26 @@ def connect(dbFile):
 # if phoneName in Phones, specific phone page from phone arena is requested and scraped
 # releaseDate is updated with scraped data
 # timeSleep is time to sleep in seconds between making each request
-def updateReleaseDate(timeSleep):
+def updatePhones(timeSleep):
     rootUrl = "https://www.phonearena.com/phones"
     nextPageUrl = "https://www.phonearena.com/phones/page/"
-    updatePageReleaseDates(rootUrl, timeSleep)
+    print("Getting phones")
+    updatePage(rootUrl, timeSleep)
     fancySleep(timeSleep)
     pageNum = 2
     while requests.get(nextPageUrl + str(pageNum)).ok:
-        updatePageReleaseDates((nextPageUrl + str(pageNum)), timeSleep)
+        print("Getting phones on page " + str(pageNum))
+        updatePage((nextPageUrl + str(pageNum)), timeSleep)
         fancySleep(timeSleep)
         pageNum += 1
+
+
 
 
 # root url https://www.phonearena.com/phones
 # next page url https://www.phonearena.com/phones/page/{pageNum}
 # timeSleep is time to sleep in seconds between making each request
-def updatePageReleaseDates(pageUrl, timeSleep):
+def updatePage(pageUrl, timeSleep):
     connection = connect("../CSI2999/db.sqlite3")
     cur = connection.cursor()
     menuHtml = requests.get(pageUrl)
@@ -41,17 +45,17 @@ def updatePageReleaseDates(pageUrl, timeSleep):
     y = menuSoup.find_all("div", class_="widget widget-tilePhoneCard")
     for z in y:
         phoneName = z.find("p", class_="title").text.lower().strip()
-        print(phoneName)
-        url = "https://www.phonearena.com/" + z.find("a")['href']
-        print(url)
+        url = z.find("a")['href']
         cur.execute("SELECT * FROM CellCheck_Phone WHERE PhoneName=?", (phoneName,))
         existingEntry = cur.fetchone()
         if existingEntry is not None:
-            print("match " + phoneName)
+            print("Match: " + phoneName)
             releaseDate = getReleaseDate(url)
-            print(releaseDate)
-            sqlUpdate = "UPDATE CellCheck_Phone SET ReleaseDate=? WHERE phoneName=?"
-            cur.execute(sqlUpdate, (releaseDate, phoneName))
+            manufacturer = getManufacturer(url)
+            print("Release Date: " + releaseDate)
+            print("Manufacturer: " + manufacturer)
+            cur.execute("UPDATE CellCheck_Phone SET ReleaseDate=? WHERE phoneName=?", (releaseDate, phoneName))
+            cur.execute("UPDATE CellCheck_Phone SET Manufacturer=? WHERE phoneName=?", (manufacturer, phoneName))
             fancySleep(timeSleep)
             connection.commit()
 
@@ -64,6 +68,14 @@ def getReleaseDate(phonePageUrl):
     return releaseDate
 
 
+def getManufacturer(phonePageUrl):
+    pageHtml = requests.get(phonePageUrl)
+    pageSoup = BeautifulSoup(pageHtml.content, "html.parser")
+    m = pageSoup.find("a", itemprop="item")
+    n = m.find_next("a", itemprop="item")['href']
+    manufacturerName = n.replace("https://www.phonearena.com/phones/manufacturers/", "")
+    return manufacturerName
+
 def fancySleep(timeSleep):
     print("sleeping " + str(int(timeSleep)) + " seconds", end="", flush=True)  # https://stackoverflow.com/questions/5598181/multiple-prints-on-the-same-line-in-python
     time.sleep(timeSleep / 4)
@@ -75,4 +87,6 @@ def fancySleep(timeSleep):
     time.sleep(timeSleep / 4)
 
 
-updateReleaseDate(10)
+updatePhones(10)
+
+#print(getReleaseDate("https://www.phonearena.com/phones/Samsung-Galaxy-S20+_id11289"))
