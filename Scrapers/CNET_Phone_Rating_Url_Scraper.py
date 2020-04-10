@@ -33,8 +33,8 @@ def Main():
             phone = i[0]
             url = i[1]
             rating = i[2]
-            PlacePhonesInDatabase(phone.strip().lower(), url, conn, c)
-            PlaceRatingsInDatabase(phone.strip().lower(), rating, conn, c)
+            PlacePhonesInDatabase(phone.replace("+", " plus").replace("(", "").replace(")", " ").strip().lower(), url, conn, c)
+            PlaceRatingsInDatabase(phone.replace("+", " plus").replace("(", "").replace(")", " ").strip().lower(), rating, conn, c)
         # c.execute("DELETE FROM CellCheck_Site")
         # conn.commit()
         # c.execute("DELETE FROM CellCheck_Phone")
@@ -155,7 +155,7 @@ def PlacePhonesInDatabase(phone, url, conn, c):
         conn.commit()
         print(f"{phone} was added to the Database")
     else:
-        c.execute("UPDATE CellCheck_Phone SET CnetURL = ? AND ReleaseDate = '' WHERE PhoneName = ?",
+        c.execute("UPDATE CellCheck_Phone SET CnetURL = ?, ReleaseDate = '' WHERE PhoneName = ?",
                   (url, phone.strip().lower(),))
         conn.commit()
         print(f"{phone} was updated in the Database")
