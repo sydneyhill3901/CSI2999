@@ -92,7 +92,11 @@
 								</div>
                             </div>
 							<div class="cell img-cell">
+								{% if imageURL %}
                                 <img src= "{{ imageURL }}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
+								{% else %}
+								<img src= "{% static "CellCheck/GenericPhone.png" %}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
+								{% endif %}
                                 <p>{{imageURL}}</p>
                             </div>
 							<div class="cell rating-cell">
