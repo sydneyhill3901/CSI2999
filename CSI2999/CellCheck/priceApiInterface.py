@@ -214,7 +214,7 @@ def filterResultList(phoneName,resultsList):
 		lambda d : "name" in d and "unlocked" in d["name"].lower(), 
 		lambda d : "price" in d or ("min_price" in d and ("max_price" in d and (d["min_price"] == d["max_price"]))), 
 		lambda d : "currency" in d and d["currency"] == "USD", 
-		lambda d : ("price" in d and int(d["price"].replace(".","")) != 0) or ("min_price" in d and int(d["min_price"].replace(".","")) != 0), 
+		lambda d : ("price" in d and ( d["price"] != None and int(d["price"].replace(".","")) != 0)) or ("min_price" in d and d["min_price"] != None and (int(d["min_price"].replace(".","")) != 0)), 
 		lambda d : not "shop_name" in d or not d["shop_name"].lower() in blacklistNames 
 	] 
 	# Filter out products which don't even have the phone name  
