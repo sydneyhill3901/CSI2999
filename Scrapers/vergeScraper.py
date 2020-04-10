@@ -118,7 +118,7 @@ def writeData(dataDictionary,filename="../CSI2999/db.sqlite3"):
 	failures = 0 # Count how many times my script fell short :'(
 	for name,data in dataDictionary.items():
 		try:
-			writePhoneData(name.strip().lower(),data,siteID,connection)
+			writePhoneData(name.replace("+", " plus").replace("(", "").replace(")", " ").strip().lower(),data,siteID,connection)
 			connection.commit() # Commit after each insertion
 		except Exception as e:
 			print(f"{e}")
@@ -144,13 +144,13 @@ def writePhoneData(phoneName,phoneData,siteID,connection):
 		c.execute("UPDATE CellCheck_Phone SET VergeURL = ?, PhoneImageURL = ? WHERE PhoneName=?",(phoneData["vergeURL"],phoneData["imgURL"],phoneName,))
 	# Phone isn't in database yet  	
 	else:
-		c.execute("INSERT INTO CellCheck_Phone (PhoneName,CnetURL,WiredURL,PCMagURL,VergeURL,ReleaseDate,PhoneImageURL) VALUES (?,?,?,?,?,?,?)",(phoneName,"","","",phoneData["vergeURL"],"",phoneData["imgURL"],))
+		c.execute("INSERT INTO CellCheck_Phone (PhoneName,CnetURL,WiredURL,PCMagURL,VergeURL,ReleaseDate,PhoneImageURL,Manufacturer) VALUES (?,?,?,?,?,?,?,?)",(phoneName,"","","",phoneData["vergeURL"],"",phoneData["imgURL"],"",))
 	
 	# Next 4 linkes commit the insertion and get the phone's id so it can be used as a foreign key in other tables
 	connection.commit()
 	c.execute("SELECT id FROM CellCheck_Phone WHERE PhoneName=?",(phoneName,))
 	phoneID = c.fetchone()[0]
-	c.execute("INSERT INTO CellCheck_Rating (Rating,Phone_id,Site_id) VALUES (?,?,?) ",(phoneData["score"],phoneID,siteID))	
+	c.execute("INSERT INTO CellCheck_Rating (Rating,Phone_id,Site_id) VALUES (?,?,?) ",(phoneData["score"],phoneID,siteID,))	
 	c.execute("INSERT INTO CellCheck_ProList (Phone_id, Site_id, Pros) VALUES (?,?,?)",(phoneID,siteID,phoneData["good stuff"],))
 	c.execute("INSERT INTO CellCheck_ConList (Phone_id, Site_id, Cons) VALUES (?,?,?)",(phoneID,siteID,phoneData["bad stuff"],))
 
