@@ -1,11 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.urls import reverse
 from django.template import loader
 from CellCheck.models import Phone, Site, Rating, ProList, ConList, CNETDetailedScore
 from CellCheck.modelHelpers import findPhoneID, getSiteIDs
 from operator import itemgetter
-import functools
+import CellCheck.priceApiInterface as priceAPI #Functions for querying priceAPI TODO: move key to env variables
 import random
 
 # Create your views here.
@@ -207,9 +207,28 @@ def Search(request):
 	else:
 		raise Http404("Search type not found")	
 
-
-	
-
+def queryPriceAPI(request,phone=None):	
+	"""
+		View which returns the true nature of your soul 
+	"""
+	print("phone name being searched is",phone)
+	if phone:
+		#phone = phone.replace("%20"," ")
+		try:
+			queryData = priceAPI.phoneQuery(phone, priceAPI.KEY, priceAPI.JOBS_URL) 
+		except Exception as e:
+			# Idk why we failed this bad, but the important thing is to return eventually
+			queryData = {"amazon":None,"google":None}
+	else:
+		queryData = {"amazon":None,"google":None}
+	# Apply the filters to remove cruft (wrong phones, biddable items, etc)
+	for key in queryData.keys():
+		if queryData[key]["success"] and queryData[key]["results"]:
+			queryData[key]["results"] = priceAPI.filterResultList(phone.lower(),queryData[key]["results"])
+			queryData[key]["results"] =	list(map(cleanPriceData,queryData[key]["results"])) if queryData[key]["results"] else None
+			if queryData[key]["results"] and len(queryData[key]["results"]) > 3:
+				queryData[key]["results"] = queryData[key]["results"][:3]
+	return JsonResponse(queryData)	
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Helpers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def makeNamesList(phoneSet):
@@ -217,3 +236,16 @@ def makeNamesList(phoneSet):
 	names =  list()
 	for phone in phoneSet:
 		names.append(phone.PhoneName)
+
+def cleanPriceData(data):
+	# Given a dictionary of priceAPI data, returns a "cleaned" dicitonary
+	cleaned = {"url":data["url"]}
+	cleaned["name"] = " ".join(data["name"].split(" ")[:9])
+	if "shipping_costs" in data:
+		cleaned["shipping_costs"] = data["shipping_costs"]
+	if "price" in data:
+		cleaned["price"] = data["price"]
+	else:
+		cleaned["price"] = data["min_price"]
+
+	return cleaned

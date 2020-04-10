@@ -26,7 +26,7 @@
 
 
             <div class="search-container">
-  	<form id="search" action="../Search/", method="post">
+  	<form id="search" action="../Search/" method="post">
 			{% csrf_token %}
             <input type="text" placeholder="Search" name="searchString">
 	    	<button name="phone" type="submit">
@@ -82,6 +82,14 @@
 							<div class="cell price-cell">
                                 <h3>Prices</h3>
                                 <hr/>
+								<div id="amazon_prices">
+									<h4>Amazon Prices</h4>
+									<p class="wait_message">Searching Amazon</p>
+								</div>
+								<div id="google_prices">
+									<h4>Google Shopping Prices</h4> 
+									<p class="wait_message">Searching Google Shopping</p>
+								</div>
                             </div>
 							<div class="cell img-cell">
                                 <img src= "{{ imageURL }}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
@@ -233,7 +241,60 @@
             <div id="copyright" class="container">
                 <p>Cell Check - Sophomore Project 2020 &copy;</p>
             </div>
-
+			<script type="text/javascript" src="{% static  '/CellCheck/jquery-3.4.1.min.js' %}"></script>
+			<script>
+					const writePriceData = (shop,resultAry) => {
+						/* Inputs: 
+							shop = "shopName"
+							resultsAry = [{"name": prodname, "url": "link" , "price" : "price", "shipping_cost" : "shipping cost" }...]
+							Adds a bulleted list of the phones with a link to purchase, the cost, and shipping cost if available
+						*/ 
+						try {
+							let priceDiv = $(`#${shop}_prices`);
+							let oldPara = priceDiv.children(".wait_message")
+							// Write store data to a price list, or inform that no results found
+							if (resultAry.length) {
+								let innerHTML = "<ul class=\"priceList\">\n";
+								// Add results as list elements w/ links, and data presented in a para element
+								for (let result of resultAry){ 
+									let name = result.name, price = result.price, link = result.url;	
+									let item = "\t\t<li>" + `\n\t\t\t<a href="${link}">${name}</a>\n\t\t\t`;
+									item += `<p>Price: \$${price}</p>\n\t\t</li>`
+									//console.log("\n" + item);
+									innerHTML += item;
+								}
+								innerHTML += "\n</ul>";
+								priceDiv.append($(innerHTML));
+							} 
+							else {
+								priceDiv.append(`<p class=\"noPrices\">Sorry, no ${shop} prices found</p>`)
+							}
+							oldPara.remove();
+						} catch (error) {
+							console.log(error);
+						}	
+				}
+				// This code is only executed when the document is fully loaded and ready
+				$(document).ready(() => {
+					const phone = "{{phoneName|lower}}";
+					// Promise to request Price data
+					fetch(`../ajax/queryData/${phone}`).then( (response) => {	
+						if (response.ok)
+							return response.json();
+						else
+							throw "Response is NOT okay"
+					}).then((jsonData) => {
+						console.log(jsonData)
+						for (let siteName in jsonData)
+							writePriceData(siteName, jsonData[siteName]["results"])
+					}).catch( (error) => {
+						//Update with no prices found if 
+						console.error("Ouch, something failed:\n",error);
+						$("#amazon_prices > .wait_message").text("Sorry, unable to search Amazon at the time.");
+						$("#google_prices > .wait_message").text("Sorry, unable to search Google Shopping at this time.");
+					})	
+				});
+			</script>
 			<script>
 				// Cite this code to W3 schools as an edit of their collapsible button code
 				// https://www.w3schools.com/howto/howto_js_collapsible.asp
