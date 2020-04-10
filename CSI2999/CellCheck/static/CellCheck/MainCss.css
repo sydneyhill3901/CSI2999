@@ -16,7 +16,8 @@ body {
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
     margin: 0;
     padding: 0;
 }
@@ -575,6 +576,10 @@ REVIEW STYLE
     padding-bottom: 7px;
     list-style-type:square;
     margin-left: 40px;
+}
+
+#collapsingList li {
+    display: none;
 }
 
 
