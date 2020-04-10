@@ -176,8 +176,8 @@
                         {% endfor %}
 
                     </ul>
-                    <button id="Collapsible" style="margin-left:75px;">Expand Phone List</button>
-
+                    <button id="Collapsible" style="margin-left:75px;">Show More</button>
+                    <button id="Retractable" style="margin-left:75px;">Show less</button>
                     </div>
             </div>
         </div>
@@ -215,6 +215,17 @@
                         e.preventDefault();
                         x = x+5;
                         $('#collapsingList li').slice(0, x).slideDown();
+                    });
+                });
+            </script>
+            <script>
+                $(function () {
+                    x=0;
+                    $('#collapsingList li').slice(0, 0).show();
+                    $('#Retractable').on('click', function (e) {
+                        e.preventDefault();
+                        x = x+5;
+                        $('#collapsingList li').slice(0, x).slideUp();
                     });
                 });
             </script>
