@@ -16,3 +16,5 @@ db.sqlite3_backup2
 .idea/
 
 PriceAPIKey
+
+*.pyc

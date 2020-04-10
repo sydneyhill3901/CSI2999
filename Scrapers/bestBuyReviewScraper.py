@@ -70,13 +70,7 @@ def getProductPage(link):
 def getReviewPage(link):
     currentPage = requests.get(link, headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) hrome/23.0.1271.64 Safari/537.11'})
     soup = BeautifulSoup(currentPage.content, "html.parser")
-    try:
-        x = soup.find("div", class_="user-generated-content-ratings-and-reviews")
         y = x.find("div", class_="col-xs-12 component-wrapper")
-        lk = "https://www.bestbuy.com/" + y.find("a", class_="see-all-reviews")['href']
-    except AttributeError:
-        lk = "BROKENLINK"
-    return lk
 
 # collects information from verified user reviews on review page link
 # makes a single request so no sleep time
