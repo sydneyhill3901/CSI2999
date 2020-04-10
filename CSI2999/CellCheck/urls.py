@@ -7,5 +7,6 @@ urlpatterns = [
 			path("Manufacturer/<str:manufacturer>", views.Manufacturer, name="Manufacturer"),
 			path("Review/<str:phoneName>", views.Review, name="Review"),
 			path("NotFound/<str:phone>", views.NotFound, name="NotFound"),
-			path("Search/", views.Search, name="Search")
+			path("Search/", views.Search, name="Search"),
+			path("ajax/queryData/<str:phone>", views.queryPriceAPI, name="queryPriceAPI")
 				]

@@ -110,7 +110,7 @@ def read_csv():
 
 # Source: https://docs.python.org/3/library/sqlite3.html
 def PlaceScoresInDatabase(phone, header, rating, conn, c):
-    c.execute("SELECT id FROM CellCheck_Phone WHERE PhoneName=?", (phone.strip().lower(),))
+    c.execute("SELECT id FROM CellCheck_Phone WHERE PhoneName=?", (phone.replace("+", " plus").replace("(", "").replace(")", " ").strip().lower(),))
     phoneid = c.fetchone()[0]
     c.execute("SELECT count(*) FROM CellCheck_CNETDetailedScore WHERE Phone_id = ?", (phoneid,))
     exists = c.fetchone()[0]
@@ -138,7 +138,7 @@ def PlaceScoresInDatabase(phone, header, rating, conn, c):
 
 # Source: https://docs.python.org/3/library/sqlite3.html
 def UpdateProDatabase(phone, description, conn, c):
-    c.execute("SELECT id FROM CellCheck_Phone WHERE PhoneName=?", (phone.strip().lower(),))
+    c.execute("SELECT id FROM CellCheck_Phone WHERE PhoneName=?", (phone.replace("+", " plus").replace("(", "").replace(")", " ").strip().lower(),))
     phoneid = c.fetchone()[0]
     c.execute("SELECT * FROM CellCheck_Site WHERE SiteName = 'CNET'")
     siteid = c.fetchone()[0]
@@ -154,7 +154,7 @@ def UpdateProDatabase(phone, description, conn, c):
 
 # Source: https://docs.python.org/3/library/sqlite3.html
 def UpdateConDatabase(phone, description, conn, c):
-    c.execute("SELECT id FROM CellCheck_Phone WHERE PhoneName=?", (phone.strip().lower(),))
+    c.execute("SELECT id FROM CellCheck_Phone WHERE PhoneName=?", (phone.replace("+", " plus").replace("(", "").replace(")", " ").strip().lower(),))
     phoneid = c.fetchone()[0]
     c.execute("SELECT * FROM CellCheck_Site WHERE SiteName = 'CNET'")
     siteid = c.fetchone()[0]
@@ -212,7 +212,12 @@ def main():
             UpdateConDatabase(phone, description, conn, c)
         elif sentiment == "Bad":
             UpdateConDatabase(phone, description, conn, c)
-         # PlaceSentimentInDatabase(phone, description, sentiment, conn, c)
+    # c.execute("DELETE FROM CellCheck_ProList")
+    # conn.commit()
+    # c.execute("DELETE FROM CellCheck_ConList")
+    # conn.commit()
+    # c.execute("DELETE FROM CellCheck_CNETDetailedScore")
+    # conn.commit()
     conn.close()
 
 
