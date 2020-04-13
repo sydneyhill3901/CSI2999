@@ -102,7 +102,8 @@ class UserReview(models.Model):
 	UsefulCount = models.IntegerField()
 	Rating = models.DecimalField(max_digits=3, decimal_places=1)
 	IsPositive = models.BooleanField(default = True) # Right now this defaults to true. If we decide to store negative reviews, can be overriden
-	
+	Content = models.TextField(max_length=400, default="")
+	Title = models.CharField(max_length=100, default="")
 	def __str__(self):
 		return f"{self.Site}'s {'positive' if self.IsPositive else 'negative'} user review for {self.Phone}"
 	

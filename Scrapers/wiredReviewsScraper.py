@@ -250,6 +250,7 @@ def wiredScrapeAndInsert(urlCsv, timeSleep, selectiveScrape=True, backupCsvWrite
         x = row.split("|")
         phoneName = x[0].strip().lower()
         url = x[1].strip()
+        phoneName = phoneName.replace("+", " plus").replace("(", "").replace(")", "")
         print(phoneName)
         try:
             if int(phoneName[0])<10 and int(phoneName[0])>3 and phoneName[1:6] == " plus":

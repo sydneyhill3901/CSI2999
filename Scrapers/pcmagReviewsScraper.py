@@ -213,6 +213,7 @@ def pcmagScrapeAndInsert(urlCsv, timeSleep, selectiveScrape=True, backupCsvWrite
         if "+" in phoneName:
             phoneName = phoneName.replace("+", " plus")
         url = x[1].strip()
+        phoneName = phoneName.replace("+", " plus").replace("(", "").replace(")", "")
         print(phoneName)
         print(url)
         scrape = False
