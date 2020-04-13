@@ -21,7 +21,7 @@
         <div id="header" class="container">
             <!-- Logo -->
             <div id="logo">
-                <h1><a href="#">Cell Check</a></h1>
+                <h1><a href="../">Cell Check</a></h1>
             </div>
 
 <div class="search-container">
@@ -78,7 +78,11 @@
 									<a class="card" href="../Review/{{phone.name|slugify}}">
 										<h3 class= "card-title">{{phone.name}}</h3>
 										<div class="card-img-cont">
+											{% if phone.imgURL %}
 											<img src={{phone.imgURL}} alt="Image Not Found" class="card-img">
+											{% else %}
+											<img src={% static 'CellCheck/GenericPhone.png'%} alt="Image Not Found" class="card-img">
+											{% endif %}
 										</div>
 									</a>
 								</li>	
@@ -91,7 +95,11 @@
     <!-- [Content] -->
     <div id="featured-wrapper2">
         <div id="featured" class="container">
-            <header><u>All Brands</u></header>
+			{% if candidates %}
+			<header><u>Similar Phones </u></header>
+			{% else %}
+			<!-- Place the phone not found image here -->
+			{% endif %}
         </div>
     </div>
 

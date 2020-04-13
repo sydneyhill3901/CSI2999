@@ -16,15 +16,12 @@
 <body>
     <!-- [Header] -->
     <div id="header-wrapper">
-
         <!-- Header container class will contain the logo and menu -->
         <div id="header" class="container">
             <!-- Logo -->
             <div id="logo">
                 <h1><a href="../">Cell Check</a></h1>
             </div>
-
-
             <div class="search-container">
   	<form id="search" action="../Search/" method="post">
 			{% csrf_token %}
@@ -34,7 +31,7 @@
 					Search Phones
 				</i>
 			</button>
-        <button name="manufacture" type="submit2">
+        	<button name="manufacture" type="submit2">
             <i class="fa fa-search">
                 Search Manufactures
             </i>
@@ -42,22 +39,6 @@
 	</form>
 
 	</div>
-
-            <!-- Menu
-            <div id="menu">
-                <ul>
-                    <li class="active">
-                        <a href="../">Home</a>
-                    </li>
-                    <li>
-                        <a href="#">??????</a>
-                    </li>
-                    <li>
-                        <a href="#">??????</a>
-                    </li>
-                </ul>
-            </div>
-            -->
             </div>
             </div>
             <!-- [End Header] -->
@@ -92,8 +73,11 @@
 								</div>
                             </div>
 							<div class="cell img-cell">
-                                <img src= "{{ imageURL }}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
-                                <p>{{imageURL}}</p>
+								{% if imageURL %}
+                                <img src= "{{ imageURL }}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found"> 
+								{% else %}
+								<img src= "{% static 'CellCheck/GenericPhone.png' %}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
+								{% endif %}
                             </div>
 							<div class="cell rating-cell">
 								<h3>Ratings</h3>
@@ -228,17 +212,16 @@
                                                 <ul class="best">
                                                     <h3>Best Buy</h3>
                                                     </ul>
-                                                <ul class="sprint">
+                                                <u1 class="sprint">
                                                     <h3>Sprint</h3>
-                                                </ul>
+                                                </u1>
                                             </div>
-                                        </div>
-
-                            </div>
+							</div>
                         </div>
                     </div>
                 </div>
             </div>
+			</div>
             <div id="copyright" class="container">
                 <p>Cell Check - Sophomore Project 2020 &copy;</p>
             </div>
