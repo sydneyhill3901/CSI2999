@@ -200,7 +200,7 @@ def Search(request):
 	Searching for phones or by manufacturer name is handled via post requests sent to this view.
 	"""
 	searchString = request.POST["searchString"].lower()
-	if	"manufacturer" in request.POST.keys():
+	if	"manufacture" in request.POST.keys():
 		return redirect(Manufacturer, manufacturer = searchString)
 	elif "phone" in request.POST.keys():
 		return redirect(Review, phoneName = searchString)
