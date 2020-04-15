@@ -95,22 +95,17 @@
                                             {% endfor %}
                                         </ul>
                                         <ul class="cnet-scores">
-                                            <h3>Cnet Subscore</h3>
-                                            {% if cnetDesign %}
-                                            <li>Design: {{cnetDesign}}</li>
+                                            <h4>Cnet Subscore</h4>
+											{% if cnetDesign %} 
+													<li>Design: {{cnetDesign}}</li>
+													<li>Features: {{cnetFeatures}}</li>
+													<li>Performance: {{cnetPerformance}}</li>
+													<li>Camera: {{cnetCamera}}</li>
+													<li>Battery: {{cnetBattery}}</li>
+											{% else %} 
+												<li class="Missing-Data">Sorry, CNET subscores unavailable</li>
                                             {% endif %}
-                                            {% if cnetFeatures %}
-                                            <li>Features: {{cnetFeatures}}</li>
-                                            {% endif %}
-                                            {% if cnetPerformance %}
-                                            <li>Performance: {{cnetPerformance}}</li>
-                                            {% endif %}
-                                            {% if cnetCamera %}
-                                            <li>Camera: {{cnetCamera}}</li>
-                                            {% endif %}
-                                            {% if cnetBattery %}
-                                            <li>Battery: {{cnetBattery}}</li>
-                                            {% endif %}
+
                                         </ul>
                                     </div>
 							</div>
@@ -209,12 +204,39 @@
                                             <hr/>
                                             <div class="bestsprint">
 
-                                                <ul class="best">
+                                                <ul class="Best Buy">
                                                     <h3>Best Buy</h3>
-                                                    </ul>
-                                                <u1 class="sprint">
+												{% if BestBuy %}
+													{% if BestBuy.avg %}
+													<li>Avg Best Buy review score: {{BestBuy.avg|floatformat:1}}
+													{% endif %}
+													{% if BestBuy.revTitle %}
+													<li><h4>{{BestBuy.revTitle}}</h4></li>
+													{% endif %}
+													<li><p>{{BestBuy.content}}</p></li>
+													<li>Rating: {{BestBuy.rating|floatformat:1}} out of 5</li>
+													<li>{{BestBuy.useflCount}} found this review useful</li>
+												{% else %}
+												<p>Sorry, we don't have Best Buy user reviews for this Phone</p>
+												{% endif %}
+
+                                                 </ul>
+                                                <ul class="Sprint">
                                                     <h3>Sprint</h3>
-                                                </u1>
+												{% if Sprint %}
+													{% if Sprint.avg %}
+													<li>Avg Best Buy review score: {{Sprint.avg|floatformat:1}}
+													{% endif %}
+													{% if Sprint.revTitle %}
+													<li><h4>{{Sprint.revTitle}}</h4></li>
+													{% endif %}
+													<li><p>{{Sprint.content}}</p></li>
+													<li>Rating: {{Sprint.rating|floatformat:1}} out of 5</li>
+													<li>{{Sprint.useflCount}} found this review useful</li>
+												{% else %}
+												<p>Sorry, we don't have Sprint user reviews for this Phone</p>
+												{% endif %}
+                                                </ul>
                                             </div>
 							</div>
                         </div>
