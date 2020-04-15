@@ -132,8 +132,7 @@
 										<img src="{% static 'CellCheck/GenericPhone.png'%}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
 										{% endif %}
 									</div>
-                                </a>
-                            </li>
+                                </a></li>
                             <li>
 								<a class="card" href="../Review/{{phone4|slugify|default:'noname'}}">
                                     
@@ -145,8 +144,7 @@
 										<img src="{% static 'CellCheck/GenericPhone.png'%}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
 										{% endif %}
 									</div>
-                                </a>
-                            </li>
+                                </a></li>
 
                         </ul>
 
@@ -156,11 +154,11 @@
                 <hr>
                 <div id="more-list">
                 <header>More phones from {{manufacturer|default:"Manufacturer Name Here"}}</header>
+
                     <ul>
                         {% for phone in phoneList %}
 							<li> 
-								<a href="../Review/{{phone|slugify}}">{{phone}}</a>
-							</li>
+								<a href="../Review/{{phone|slugify}}">{{phone}}</a></li>
                         {% empty %}
                             <li class=empty">Phones Not Found</li>
                         {% endfor %}
@@ -168,8 +166,7 @@
                     <ul id="collapsingList">
                         {% for phone in expandedPhoneList %}
 							<li> 
-								<a href="../Review/{{phone|slugify}}">{{phone}}</a>
-							</li>
+								<a href="../Review/{{phone|slugify}}">{{phone}}</a></li>
                         {% empty %}
                             <li class=empty">Phones Not Found</li>
                         {% endfor %}
