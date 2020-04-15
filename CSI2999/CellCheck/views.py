@@ -2,7 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.urls import reverse
 from django.template import loader
-from CellCheck.models import Phone, Site, Rating, ProList, ConList, CNETDetailedScore
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from CellCheck.models import Phone, Site, Rating, ProList, ConList, CNETDetailedScore, UserReview, AvgUserScore
 from CellCheck.modelHelpers import findPhoneID, getSiteIDs
 from operator import itemgetter
 import CellCheck.priceApiInterface as priceAPI #Functions for querying priceAPI TODO: move key to env variables
@@ -61,7 +62,7 @@ def Manufacturer(request, manufacturer = None):
 		phoneTable = Phone.objects
 		# Get an alphabetically sorted list of the phones with manufacturer name in their name
 		# Once Sydney has release date scraped, I can edit this to sort on release date instead
-		manufacPhones = phoneTable.filter(PhoneName__contains = manufacturer.lower()).order_by("PhoneName")
+		manufacPhones = phoneTable.filter(PhoneName__contains = manufacturer.lower()).order_by("ReleaseDate")
 		# Top 4 phones get image cards, load the context w/ that data
 		for i in range(len(manufacPhones)):
 			if i > 3: # Only get 1st 4 phones
@@ -131,36 +132,26 @@ def Review(request, phoneName = None):
 				context["imageURL"] = Phone.objects.get(pk = phoneID).getImageURL()
 			except Exception as e:
 				continue
-
+	# Adding CNET Score Breakdown
 	try:
 		context["cnetDesign"] = CNETDetailedScore.objects.filter(phone = phoneID).get(phone = phoneID).getDesign()
-	except Exception as e:
-		context["cnetDesign"] = "No Score"
-
-	try:
 		context["cnetFeatures"] = CNETDetailedScore.objects.filter(phone = phoneID).get(phone = phoneID).getFeatures()
-	except Exception as e:
-		context["cnetFeatures"] = "No Score"
-
-	try:
 		context["cnetPerformance"] = CNETDetailedScore.objects.filter(phone = phoneID).get(phone = phoneID).getPerformance()
-	except Exception as e:
-		context["cnetPerformance"] = "No Score"
-
-	try:
 		context["cnetCamera"] = CNETDetailedScore.objects.filter(phone = phoneID).get(phone = phoneID).getCamera()
-	except Exception as e:
-		context["cnetCamera"] = "No Score"
-
-	try:
 		context["cnetBattery"] = CNETDetailedScore.objects.filter(phone = phoneID).get(phone = phoneID).getBattery()
-	except Exception as e:
-		context["cnetBattery"] = "No Score"
+	except ObjectDoesNotExist as e:
+		pass
 
-		# Add average to context
+	# Adding USer Review Data
+	bestBuyDict = getUserReviewDictionary(phoneID,"Best Buy")		
+	sprintDict = getUserReviewDictionary(phoneID,"Sprint")
+	if bestBuyDict:
+		context["BestBuy"] = bestBuyDict
+	if sprintDict:
+		context["Sprint"] = sprintDict
+	# Add average to context, render that sucker
 	if context["scores"]:
 		context["scores"].append(("Average",sum(list(map(itemgetter(1),context["scores"])))/len(context["scores"])))
-
 		return render(request, "CellCheck/Review.html", context)
 	else:
 		return redirect(NotFound, phone = phoneName.lower().replace(" ","-"))
@@ -231,6 +222,28 @@ def queryPriceAPI(request,phone=None):
 	return JsonResponse(queryData)	
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Helpers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def getUserReviewDictionary(phoneId,site):
+	siteId = None	
+	try:
+		siteId = Site.objects.get(SiteName=site)
+	except MultipleObjectsReturned as e:
+		print(f"Oh no! some duplicate items {e}")
+		return {}
+	except ObjectDoesNotExist as e:
+		print(f"Oh no! No item found in database. {e}")
+		return {}
+	if siteId and phoneId:
+		try:
+			results = UserReview.objects.filter(Site=siteId).filter(Phone=phoneId).order_by("UsefulCount")
+			if len(results) == 0:
+				return {}
+			userRevDict = results[0].createUserReviewDict()
+			userRevDict["avg"] = AvgUserScore.objects.get(Site=siteId, Phone=phoneId).getAvg()
+			return userRevDict
+		except Exception as e:
+			print(e)
+			return {}
+
 def makeNamesList(phoneSet):
 	# Given a django phoneSet returns a list of their names as strings
 	names =  list()
