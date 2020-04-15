@@ -1,4 +1,5 @@
 from django.db import models
+import django.core.exceptions
 #TODO: Add query methods for use in views 
 
 """
@@ -42,6 +43,10 @@ class Site(models.Model):
 
 	def __str__(self):
 		return self.SiteName
+
+	def getId(self):
+		return self.pk
+
 
 class Rating(models.Model):
 	# Need to store reviews as floats b/c some sites scores are to 1st decimal point
@@ -107,11 +112,24 @@ class UserReview(models.Model):
 	def __str__(self):
 		return f"{self.Site}'s {'positive' if self.IsPositive else 'negative'} user review for {self.Phone}"
 	
+	def createUserReviewDict(self):
+		return {
+				"revTitle": self.Title,
+				"content": '"' + self.Content + '"',
+				"rating": self.Rating,
+				"usefulCount": self.UsefulCount,
+				}
+
+
+	
 class AvgUserScore(models.Model):
 	# Average user scores for a given phone on an ecommerce site
 	Site = models.ForeignKey(Site, on_delete=models.CASCADE)
 	Phone = models.ForeignKey(Phone, on_delete=models.CASCADE)
 	AvgScore = models.DecimalField(max_digits=3, decimal_places=1)
+	
+	def getAvg(self):
+		return self.AvgScore
 
-	def __Str__(self):
+	def __str__(self):
 		return f"{self.Site}'s average score for {self.Phone} : {self.AvgScore}"
