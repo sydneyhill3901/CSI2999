@@ -299,7 +299,7 @@ CONTENT
 
 #more-list ul {
     padding-left: 75px;
-    
+    margin: 0;
 }
 
 
@@ -581,6 +581,8 @@ REVIEW STYLE
 #collapsingList li {
     display: none;
 }
+
+
 
 
 /*********************************************
