@@ -212,9 +212,11 @@
 													{% endif %}
 													{% if BestBuy.revTitle %}
 													<li class="reviewTitle">{{BestBuy.revTitle}}</li>
+													{% else %}
+													<li class="reviewtitle">Review</li>
 													{% endif %}
+													<li>Rating: {{BestBuy.rating|floatformat:1}} out of 5.0</li>
 													<li><p>{{BestBuy.content}}</p></li>
-													<li>Rating: {{BestBuy.rating|floatformat:1}} out of 5</li>
 													<li>{{BestBuy.usefulCount}} found this review useful</li>
 												{% else %}
 												<p>Sorry, we don't have Best Buy user reviews for this Phone</p>
@@ -229,9 +231,11 @@
 													{% endif %}
 													{% if Sprint.revTitle %}
 													<li class="reviewTitle">{{Sprint.revTitle}}</li>
+													{% else %}
+													<li class="reviewTitle">Review</li>
 													{% endif %}
+													<li>Rating: {{Sprint.rating|floatformat:1}} out of 5.0</li>
 													<li><p>{{Sprint.content}}</p></li>
-													<li>Rating: {{Sprint.rating|floatformat:1}} out of 5</li>
 													<li>{{Sprint.usefulCount}} found this review useful</li>
 												{% else %}
 												<p>Sorry, we don't have Sprint user reviews for this Phone</p>

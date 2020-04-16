@@ -64,14 +64,23 @@
         <div id="page" class="container">
 			<div id="content">
 
-				<p><font size="4"><b><i>We don't have quite what you're looking for, but why not take a look at our recommendations we have made for you. Alternatively, shop by manufacture on the links below
-				</b>
-				</i>
-				</font>
-				</p>
-
-
-
+				<font size="4"><b><i>	
+					{% if candidates %}
+					<p class="centered">Maybe you were looking for one of the related phones below?</p>
+					{% else %}
+					<p class="centered">Sorry, our search didn't turn up any phones.</p>	
+					{% endif %}
+				</b></i></font>
+				
+				<div id="featured-wrapper2">
+					<div id="featured" class="container">
+						{% if candidates %}
+						<header><u>Similar Phones </u></header>
+						{% else %}
+						<img src={% static 'CellCheck/GenericPhone.png'%} alt="pnf" width="666" height="420">						
+						{% endif %}
+					</div>
+				</div>
                 <div id="two-column">
                     <section>
                         <h2 class="section-title"></h2>
@@ -95,29 +104,15 @@
 
                     </section>
 				</div>
-
-    <!-- [Content] -->
-    <div id="featured-wrapper2">
-        <div id="featured" class="container">
-			{% if candidates %}
-			<header><u>Similar Phones </u></header>
-			{% else %}
-			<!-- Place the phone not found image here -->
-			{% endif %}
-        </div>
-    </div>
-
-
-
             </div>
-	<u1>
+    <!-- [Content] -->
+	<ul>
 	{% for phone in candidates %}
 		<li class="candidate-tab">
 			<a href="../Review/{{phone|slugify}}">{{phone}}</a>
 		</li>
 	{% endfor %}
-	</u1>
-
+	</ul>
         </div>
 
 
@@ -127,10 +122,11 @@
 			display:block;
 			margin-left:auto;
 			margin-right:auto;
+			}
+		.centered{
+			text-align:center;
+		}
 	</style>
-
-
-		<img src="https://cdn.discordapp.com/attachments/664554487536680964/698280929218658323/Sop_Not_Found_Image.png" alt="pnf" width="666" height="420">
 
         <div id="copyright" class="container">
             <p>Cell Check - Sophomore Project 2020 &copy;</p>
