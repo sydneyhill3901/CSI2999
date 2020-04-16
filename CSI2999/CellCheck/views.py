@@ -80,6 +80,9 @@ def Manufacturer(request, manufacturer = None):
 
 def Review(request, phoneName = None):
 	# scores: List of ("name",fltScore) pairs
+	if None == phoneName:
+		return redirect(NotFound)
+
 	context = { 
 				"imageURL":str(),
 				"phoneName":str(),
@@ -188,13 +191,21 @@ def NotFound(request, phone = None):
 
 def Search(request):
 	"""
-	Searching for phones or by manufacturer name is handled via post requests sent to this view.
+		Searching for phones or by manufacturer name is handled via post requests sent to this view.
 	"""
+
 	searchString = request.POST["searchString"].lower()
 	if	"manufacture" in request.POST.keys():
-		return redirect(Manufacturer, manufacturer = searchString)
+		if searchString:
+			return redirect(Manufacturer, manufacturer = searchString)
+		else:
+			return redirect(Manufacturer)
+
 	elif "phone" in request.POST.keys():
-		return redirect(Review, phoneName = searchString)
+		if searchString:
+			return redirect(Review, phoneName = searchString)
+		else:
+			return redirect(Review)
 	else:
 		raise Http404("Search type not found")	
 
