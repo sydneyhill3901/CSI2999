@@ -208,10 +208,10 @@
                                                     <h3>Best Buy</h3>
 												{% if BestBuy %}
 													{% if BestBuy.avg %}
-													<li>Avg Best Buy review score: {{BestBuy.avg|floatformat:1}}
+													<li>Average Best Buy review score: {{BestBuy.avg|floatformat:1}}
 													{% endif %}
 													{% if BestBuy.revTitle %}
-													<li><h4>{{BestBuy.revTitle}}</h4></li>
+													<li class="reviewTitle">{{BestBuy.revTitle}}</li>
 													{% endif %}
 													<li><p>{{BestBuy.content}}</p></li>
 													<li>Rating: {{BestBuy.rating|floatformat:1}} out of 5</li>
@@ -225,10 +225,10 @@
                                                     <h3>Sprint</h3>
 												{% if Sprint %}
 													{% if Sprint.avg %}
-													<li>Avg Best Buy review score: {{Sprint.avg|floatformat:1}}
+													<li>Avgerage Sprint review score: {{Sprint.avg|floatformat:1}}
 													{% endif %}
 													{% if Sprint.revTitle %}
-													<li><h4>{{Sprint.revTitle}}</h4></li>
+													<li class="reviewTitle">{{Sprint.revTitle}}</li>
 													{% endif %}
 													<li><p>{{Sprint.content}}</p></li>
 													<li>Rating: {{Sprint.rating|floatformat:1}} out of 5</li>
