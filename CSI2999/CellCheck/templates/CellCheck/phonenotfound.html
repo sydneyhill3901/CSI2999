@@ -11,6 +11,21 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Righteous&display=swap" rel="stylesheet">
+	{% if not candidates %}
+	<style>
+		.centered {
+			text-align : center;
+			color : #333333
+		}
+		img.centered {
+			position: static;
+			margin-top: 1em;
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	</style>
+	{% endif %}
 </head>
 
 <body>
@@ -50,11 +65,6 @@
     <div id="featured-wrapper">
         <div id="featured" class="container">
 			<header>Sorry, we currently have no results for {{phoneName|default:"your search"}}. </header>
-
-            <!-- [Buttons if needed]
-
-            <a href="#" class="button">This is a Button</a>
-            <a href="#" class="button button-alt">This is a Button</a> -->
         </div>
     </div>
 
@@ -70,6 +80,7 @@
 					{% else %}
 					<p class="centered">Sorry, our search didn't turn up any phones.</p>	
 					{% endif %}
+					<hr>
 				</b></i></font>
 				
 				<div id="featured-wrapper2">
@@ -106,17 +117,36 @@
 				</div>
             </div>
     <!-- [Content] -->
-	<ul>
-	{% for phone in candidates %}
-		<li class="candidate-tab">
-			<a href="../Review/{{phone|slugify}}">{{phone}}</a>
-		</li>
-	{% endfor %}
-	</ul>
+		<div id="more-list">
+			<ul>
+			{% for phone in candidates %}
+				<li>
+					<a href="../Review/{{phone|slugify}}">{{phone}}</a>
+				</li>
+			{% endfor %}
+			</ul>
+			<ul id="collapsingList">
+			{% for phone in collapsingList %}
+				<li> 
+					<a href="../Review/{{phone|slugify}}">{{phone}}</a>
+				</li>
+			{% endfor %}
+			</ul>
+			{% if collapsingList %}
+			<button id="Collapsible" style="margin-left:75px;">Show More</button>
+			<button id="Retractable" style="margin-left:75px;">Show less</button>
+			{% endif %}
+		</div>
+    </div>
+    </div>
+
+
+        <div id="copyright" class="container">
+            <p>Cell Check - Sophomore Project 2020 &copy;</p>
         </div>
 
 
-        </div>
+</body>
 	<style>
 		img{
 			display:block;
@@ -127,12 +157,6 @@
 			text-align:center;
 		}
 	</style>
-
-        <div id="copyright" class="container">
-            <p>Cell Check - Sophomore Project 2020 &copy;</p>
-        </div>
-
-
-</body>
-
+<script type="text/javascript" src="{% static 'CellCheck/jquery-3.4.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'CellCheck/fancyJS.js' %}"></script> 
 </html>

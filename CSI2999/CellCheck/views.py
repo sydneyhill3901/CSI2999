@@ -9,7 +9,6 @@ from operator import itemgetter
 import CellCheck.priceApiInterface as priceAPI #Functions for querying priceAPI TODO: move key to env variables
 import random
 
-# Create your views here.
 
 def index(request):	
 	# Manufacturer names as strings, associated links to phone images as well. 
@@ -55,7 +54,7 @@ def Manufacturer(request, manufacturer = None):
 				"phone4":str(),
 				"phone4URL":str(),
 				"phoneList":[],
-                                "expandedPhoneList":[],
+                "expandedPhoneList":[],
 				}
 	if manufacturer:
 		context["manufacturer"] = manufacturer
@@ -164,6 +163,7 @@ def NotFound(request, phone = None):
 	context = {
 				"phoneName":str(),
 				"candidates":list(),
+				"collapsingList":list(),
 				"topCandidateImages":list(str()), # list w/ image URLs from 1st 3 phones in possible phones
 				"topCandidates":list(dict())
 				}		
@@ -175,10 +175,14 @@ def NotFound(request, phone = None):
 			candidates = Phone.objects.filter(PhoneName__contains = words[1])
 		else: # If only 1 word entered, just do a select where like word
 			candidates = Phone.objects.filter(PhoneName__contains = words[0])
-		if candidates: # if we got some candidate phones, put names in context, also get 1st 3 phone images
-			if len(candidates) > 3:
+		if candidates: 
+			# if we got some candidate phones, put names in context,
+			if len(candidates) > 8:
+				context["candidates"] = list(map(lambda phone : phone.PhoneName,candidates[3:9]))
+				context["collapsingList"] = list(map(lambda phone : phone.PhoneName,candidates[9:])) 
+			elif len(candidates) > 3:
 				context["candidates"] = list(map(lambda phone : phone.PhoneName,candidates[3:]))
-			# TODO: Edit imageURLS in context to be tuples of (phoneName,imageURL). Maybe rename this context to topCandiates or soemthing
+			# also get 1st 3 phone image
 			for i in range(len(candidates)):
 				if i > 2:
 					break

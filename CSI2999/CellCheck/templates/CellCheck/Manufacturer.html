@@ -11,6 +11,21 @@
     <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Righteous&display=swap" rel="stylesheet">
 	<title>{{phoneName|default:"Manufacturer Name Here"}} Phones</title>
+	{% if not phone1 %}
+	<style>
+		.centered {
+			text-align : center;
+			color : #333333
+		}
+		img.centered {
+			position: static;
+			margin-top: 1em;
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	</style>
+	{% endif %}
 </head>
 
 <body>
@@ -42,22 +57,10 @@
 
 	</div>
             <!-- Menu -->
-
-            <!--
-            <div id="menu">
-                <ul>
-                    <li class="active">
-                        <a href="../">Home</a>
-                    </li>
-                    <li>
-                        <a href="#">??????</a>
-                    </li>
-                    <li>
-                        <a href="#">??????</a>
                     </li>
                 </ul>
             </div>
-            -->
+
         </div>
     </div>
     <!-- [End Header] -->
@@ -75,8 +78,6 @@
         </div>
     </div>
 
-
-
     <div id="page-wrapper">
         <div id="page" class="container">
             <div id="content"> 
@@ -86,146 +87,111 @@
                         <h2 class="section-title"></h2>
 
                         <ul class="card-list">
+							{% if phone1 %}
                             <li>
 								<a class="card" href="../Review/{{phone1|slugify|default:'noname'}}">
-                                    
                                     <h3 class="card-title">{{phone1|default:"Phone 1"}}</h3>
                                     <div class="card-img-cont">
-										{% if phone1URL %}
-                                        <img src={{phone1URL|default:"#"}} alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
-										{% else %}
-										<img src="{% static 'CellCheck/GenericPhone.png'%}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
-										{% endif %}
-                                    </div>
+									{% if phone1URL %}
+                                   <img src={{phone1URL|default:"#"}} alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
+								   {% else %}
+								   <img src={% static 'CellCheck/Phone_Not_Found_Image.png'%} alt="No Phone Found">
+								   {% endif %}
+									</div>
                                 </a>
                             </li>
+							{% endif %}
+                            {% if phone2 %}
                             <li>
-								<a class="card" href="../Review/{{phone2|slugify|default:'noname'}}">
-                                    
+								<a class="card" href="../Review/{{phone2|slugify|default:'noname'}}"> 
                                     <h3 class="card-title">{{phone2|default:"Phone 2"}}</h3>
                                     <div class="card-img-cont">
-                                        {% if phone2URL %}
+									{% if phone2URL %}
                                         <img src={{phone2URL|default:"#"}} alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
-										{% else %}
-										<img src="{% static 'CellCheck/GenericPhone.png'%}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
-										{% endif %}
-                                    </div>
-
+								   {% else %}
+								   <img src={% static 'CellCheck/Phone_Not_Found_Image.png'%} alt="No Phone Found">
+								   {% endif %}
+									</div>
                                 </a>
                             </li>
-
                         </ul>
-
+						{% endif %}
                     </section>
                     <section>
                         <h2 class="section-title"></h2>
 
                         <ul class="card-list">
+                            {% if phone3 %}
                             <li>
-									<a class="card" href="../Review/{{phone3|slugify|default:'noname'}}">
-                                    
+									<a class="card" href="../Review/{{phone3|slugify|default:'noname'}}"> 
                                     <h3 class="card-title">{{phone3|default:"Phone 3"}}</h3>
                                     <div class="card-img-cont">
-                                        {% if phone3URL %}
+										{% if phone3URL %}
                                         <img src={{phone3URL|default:"#"}} alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
-										{% else %}
-										<img src="{% static 'CellCheck/GenericPhone.png'%}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
-										{% endif %}
+									   {% else %}
+									   <img src={% static 'CellCheck/Phone_Not_Found_Image.png'%} alt="No Phone Found">
+									   {% endif %}
 									</div>
+
                                 </a></li>
+							{% endif %}
+                            {% if phone4 %}
                             <li>
-								<a class="card" href="../Review/{{phone4|slugify|default:'noname'}}">
-                                    
+								<a class="card" href="../Review/{{phone4|slugify|default:'noname'}}"> 
                                     <h3 class="card-title">{{phone4|default:"Phone 4"}}</h3>
                                     <div class="card-img-cont">
-                                        {% if phone4URL %}
-                                        <img src={{phone4URL|default:"#"}} alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
-										{% else %}
-										<img src="{% static 'CellCheck/GenericPhone.png'%}" alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
-										{% endif %}
+										{% if phone4URL %}
+                                       <img src={{phone4URL|default:"#"}} alt="No&nbsp;Phone&nbsp;Image&nbsp;Found">
+									   {% else %}
+									   <img src={% static 'CellCheck/Phone_Not_Found_Image.png'%} alt="No Phone Found">
+									   {% endif %}
 									</div>
-                                </a></li>
-
+                               	</a></li>
+								{% endif %}
                         </ul>
-
                     </section>
-
+					{% if not phone1URL %}
+						<div>
+							<h3 class="centered">Sorry, no {{manufacturer|default:"Manufacturer Name Here"}} phones found</h3>
+						</div>
+					{% endif %}
                 </div>
                 <hr>
+				{% if not phone1 %}
+				<div>
+					<img class="centered" src={% static 'CellCheck/Phone_Not_Found_Image.png'%} alt="No Phones Found :(" width="666" height="420">						
+				</div>
+				{% endif %}
                 <div id="more-list">
+				{% if phoneList %}
                 <header>More phones from {{manufacturer|default:"Manufacturer Name Here"}}</header>
-
                     <ul>
                         {% for phone in phoneList %}
 							<li> 
 								<a href="../Review/{{phone|slugify}}">{{phone}}</a></li>
-                        {% empty %}
-                            <li class=empty">Phones Not Found</li>
                         {% endfor %}
 					</ul>
                     <ul id="collapsingList">
                         {% for phone in expandedPhoneList %}
 							<li> 
 								<a href="../Review/{{phone|slugify}}">{{phone}}</a></li>
-                        {% empty %}
-                            <li class=empty">Phones Not Found</li>
                         {% endfor %}
 
                     </ul>
-                    <button id="Collapsible" style="margin-left:75px;">Show More</button>
-                    <button id="Retractable" style="margin-left:75px;">Show less</button>
+					{% if expandedPhoneList %}
+	                    <button id="Collapsible" style="margin-left:75px;">Show More</button>
+	                    <button id="Retractable" style="margin-left:75px;">Show less</button>
+					{% endif %}
                     </div>
-            </div>
-        </div>
+				{% endif %}
+	            </div>
+	        </div>
         </div>
 
         <div id="copyright" class="container">
             <p>Cell Check - Sophomore Project 2020 &copy;</p>
         </div>
-		
-		<!--<script>
-				// Cite this code to W3 schools as an edit of their collapsible button code
-				// https://www.w3schools.com/howto/howto_js_collapsible.asp
-				let coll = document.getElementsByClassName("Collapsible");
-				let i;
-				for (i = 0; i < coll.length; i++) {
-						let collapseList = coll[i].nextElementSibling;
-						collapseList.style.display = "none"
-						coll[i].addEventListener("click", function() {	
-								this.classList.toggle("active");
-								let content = this.nextElementSibling;
-								if (content.style.display != "none"){
-								  content.style.display = "none";
-								} else {
-								  content.style.display = "block";
-								}
-					  });
-				}
-			</script>-->
-            <script type="text/javascript" src="{% static 'CellCheck/jquery-3.4.1.min.js' %}"></script>
-            <script>
-                $(function () {
-                    x=0;
-                    $('#collapsingList li').slice(0, 0).show();
-                    $('#Collapsible').on('click', function (e) {
-                        e.preventDefault();
-                        x = x+5;
-                        $('#collapsingList li').slice(0, x).slideDown();
-                    });
-                });
-            </script>
-            <script>
-                $(function () {
-                    x=0;
-                    $('#collapsingList li').slice(0, 0).show();
-                    $('#Retractable').on('click', function (e) {
-                        e.preventDefault();
-                        x = x+5;
-                        $('#collapsingList li').slice(0, x).slideUp();
-                    });
-                });
-            </script>
-
 </body>
-
+<script type="text/javascript" src="{% static 'CellCheck/jquery-3.4.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'CellCheck/fancyJS.js' %}"></script> 
 </html>

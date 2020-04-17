@@ -252,40 +252,9 @@
                 <p>Cell Check - Sophomore Project 2020 &copy;</p>
             </div>
 			<script type="text/javascript" src="{% static  '/CellCheck/jquery-3.4.1.min.js' %}"></script>
+			<script type="text/javascript" src="{% static  '/CellCheck/queryAPI.js' %}"></script>
+			<script type="text/javascript" src="{% static  '/CellCheck/fancyJS.js' %}"	></script>
 			<script>
-					const writePriceData = (shop,resultAry) => {
-						/* Inputs: 
-							shop = "shopName"
-							resultsAry = [{"name": prodname, "url": "link" , "price" : "price", "shipping_cost" : "shipping cost" }...]
-							Adds a bulleted list of the phones with a link to purchase, the cost, and shipping cost if available
-						*/ 
-						try {
-							let priceDiv = $(`#${shop}_prices`);
-							let oldPara = priceDiv.children(".wait_message")
-							// Write store data to a price list, or inform that no results found
-							if (resultAry != null) {
-								let innerHTML = "<ul class=\"priceList\">\n";
-								// Add results as list elements w/ links, and data presented in a para element
-								//for (let result of resultAry){ 
-								resultAry.forEach( (result) => {
-									let name = result.name, price = result.price, link = result.url;	
-									let item = "\t\t<li>" + `\n\t\t\t<a href="${link}">${name}</a>\n\t\t\t`;
-									item += `<p>Price: \$${price}</p>\n\t\t</li>`
-									//console.log("\n" + item);
-									innerHTML += item;
-								});
-								//}
-								innerHTML += "\n</ul>";
-								priceDiv.append($(innerHTML));
-							} 
-							else {
-								priceDiv.append(`<p class=\"noPrices\">Sorry, no ${shop} prices found</p>`)
-							}
-							oldPara.remove();
-						} catch (error) {
-							console.log(error);
-						}	
-				}
 				// This code is only executed when the document is fully loaded and ready
 				$(document).ready(() => {
 					const phone = "{{phoneName|lower}}";
@@ -306,27 +275,8 @@
 						$("#google_prices > .wait_message").text("Sorry, unable to search Google Shopping at this time.");
 					})	
 				});
-			</script>
-			<script>
-				// Cite this code to W3 schools as an edit of their collapsible button code
-				// https://www.w3schools.com/howto/howto_js_collapsible.asp
-				let coll = document.getElementsByClassName("Collapsible");
-				let i;
-				for (i = 0; i < coll.length; i++) {
-						let collapseList = coll[i].nextElementSibling;
-						collapseList.style.display = "none"
-						coll[i].addEventListener("click", function() {	
-								this.classList.toggle("active");
-								let content = this.nextElementSibling;
-								if (content.style.display != "none"){
-								  content.style.display = "none";
-								} else {
-								  content.style.display = "initial";
-								}
-					  });
-				}
-			</script>
 
+			</script>
             </body>
 
             </html>
