@@ -459,6 +459,11 @@ REVIEW STYLE
     max-height: 700px;
 }
 
+.price-cell h4 {
+    padding-left: 25px;
+    font-size: 1.23rem;
+}
+
 .img-cell {
     max-height: 460px;
     width: auto;
@@ -494,6 +499,8 @@ REVIEW STYLE
     flex: 50%;
 }
 
+
+
 .review-cell {
     grid-row: 3/3;
     grid-column-start: 1;
@@ -517,14 +524,14 @@ REVIEW STYLE
 }
 
 .bestsprint h3{
-    font-size: 1.25rem;
-    text-align: left;
+    font-size: 1.5rem;
+    text-align: center;
     margin: 0;
-    padding: 0;
+    padding-bottom: 10px;
 }
 
 .procon h3 {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     text-align: left;
     margin: 0;
     padding: 0;
@@ -545,8 +552,9 @@ REVIEW STYLE
     margin: 1rem;
 }
 
-.best {
-    flex: 50%;
+.Best {
+    flex: 45%;
+    margin-right: 25px;
 }
 
 .cons  {
@@ -562,8 +570,9 @@ REVIEW STYLE
     margin: 1rem;
 }
 
-.sprint {
-    flex: 50%;
+.Sprint {
+    flex: 45%;
+    margin-right: 25px;
 }
 
 .procon ul li ul li {
@@ -578,10 +587,24 @@ REVIEW STYLE
     margin-left: 40px;
 }
 
+.bestsprint ul li {
+     list-style-type: square;
+}
+
 #collapsingList li {
     display: none;
 }
 
+.reviewTitle {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.bestsprint .reviewTitle {
+    list-style-type: "★";
+    padding: 10px;
+
+}
 
 
 
