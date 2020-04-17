@@ -207,9 +207,6 @@
                                                 <ul class="Best Buy">
                                                     <h3>Best Buy</h3>
 												{% if BestBuy %}
-													{% if BestBuy.avg %}
-													<li>Average Best Buy review score: {{BestBuy.avg|floatformat:1}}
-													{% endif %}
 													{% if BestBuy.revTitle %}
 													<li class="reviewTitle">{{BestBuy.revTitle}}</li>
 													{% else %}
@@ -218,6 +215,9 @@
 													<li>Rating: {{BestBuy.rating|floatformat:1}} out of 5.0</li>
 													<li><p>{{BestBuy.content}}</p></li>
 													<li>{{BestBuy.usefulCount}} found this review useful</li>
+													{% if BestBuy.avg %}
+													<li>Average Best Buy review score: {{BestBuy.avg|floatformat:1}}
+													{% endif %}
 												{% else %}
 												<p>Sorry, we don't have Best Buy user reviews for this Phone</p>
 												{% endif %}
@@ -226,9 +226,6 @@
                                                 <ul class="Sprint">
                                                     <h3>Sprint</h3>
 												{% if Sprint %}
-													{% if Sprint.avg %}
-													<li>Avgerage Sprint review score: {{Sprint.avg|floatformat:1}}
-													{% endif %}
 													{% if Sprint.revTitle %}
 													<li class="reviewTitle">{{Sprint.revTitle}}</li>
 													{% else %}
@@ -237,6 +234,9 @@
 													<li>Rating: {{Sprint.rating|floatformat:1}} out of 5.0</li>
 													<li><p>{{Sprint.content}}</p></li>
 													<li>{{Sprint.usefulCount}} found this review useful</li>
+													{% if Sprint.avg %}
+													<li>Average Sprint review score: {{Sprint.avg|floatformat:1}}
+													{% endif %}
 												{% else %}
 												<p>Sorry, we don't have Sprint user reviews for this Phone</p>
 												{% endif %}
