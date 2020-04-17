@@ -161,8 +161,6 @@ def Review(request, phoneName = None):
 
 
 def NotFound(request, phone = None):
-	# TODO: Run this idea by Kemal, rather than All Brands, it's phones with similar names/names searched phone IN name
-	# 		First 3 results can have their images rendered into the 3 picture cards
 	context = {
 				"phoneName":str(),
 				"candidates":list(),
@@ -225,9 +223,9 @@ def queryPriceAPI(request,phone=None):
 		queryData = {"amazon":None,"google":None}
 	# Apply the filters to remove cruft (wrong phones, biddable items, etc)
 	for key in queryData.keys():
-		if queryData[key]["success"] and queryData[key]["results"]:
+		if "success" in queryData[key] and (queryData[key]["success"] and queryData[key]["results"]):
 			queryData[key]["results"] = priceAPI.filterResultList(phone.lower(),queryData[key]["results"])
-			queryData[key]["results"] =	list(map(cleanPriceData,queryData[key]["results"])) if queryData[key]["results"] else None
+			queryData[key]["results"] =	list(map(cleanPriceData(phone),queryData[key]["results"])) if queryData[key]["results"] else None
 			if queryData[key]["results"] and len(queryData[key]["results"]) > 3:
 				queryData[key]["results"] = queryData[key]["results"][:3]
 	return JsonResponse(queryData)	
@@ -261,15 +259,64 @@ def makeNamesList(phoneSet):
 	for phone in phoneSet:
 		names.append(phone.PhoneName)
 
-def cleanPriceData(data):
+def cleanPriceData(phoneName):
+	# higher order function for use in a Map. Returns a functioon designed to 
+	# process the product name of a priceAPI search result
+	def helper(data):
 	# Given a dictionary of priceAPI data, returns a "cleaned" dicitonary
-	cleaned = {"url":data["url"]}
-	cleaned["name"] = " ".join(data["name"].split(" ")[:9])
-	if "shipping_costs" in data:
-		cleaned["shipping_costs"] = data["shipping_costs"]
-	if "price" in data:
-		cleaned["price"] = data["price"]
-	else:
-		cleaned["price"] = data["min_price"]
+		cleaned = {"url":data["url"]}
+		cleaned["name"] = processPhoneName(data["name"],phoneName,",-.")
+		# If we couldn't get a clean result via processPhoneName, then get the first 
+		# n + 1 words where n is the original phone name.
+		if not cleaned["name"]:
+			nameLength = len(phoneName.split(" "))
+			cleaned["name"] = " ".join(data["name"].split(" ")[0:nameLength]).strip(",")
+		if "shipping_costs" in data:
+			cleaned["shipping_costs"] = data["shipping_costs"]
+		if "price" in data:
+			cleaned["price"] = data["price"]
+		else:
+			cleaned["price"] = data["min_price"]
+		return cleaned
+	return helper
 
-	return cleaned
+def processPhoneName(nameString,phoneName,seperators):
+	"""
+	Breaks the nameString up into "chunks" spliit on the spacers provided in the spacers string
+	Attempts to return a string structured as (phoneName) (storage capacity). Note, this function
+	uses '|' as its final seperator to split the nameString on, so it will always split the pipe
+	character. 
+	"""
+	phoneSuffixes = ["ultra", "+", "plus", "max"]
+	charSuffixes = ["e","s"]
+	nameString = nameString.lower()
+
+	# First, check that the phone is in the name string
+	if not phoneName in nameString:
+		print(f"Expected {phoneName} in : {nameString}")
+		return ""
+	# First replace all the spacers with a | character
+	for c in seperators:
+		nameString = nameString.replace(c,"|")
+	# Get the chunks, in lower case w/o whitespace
+	chunks = list(map(lambda s : s.strip().lower(),nameString.split("|")))
+	result = phoneName.capitalize()
+	# For now, better to add the suffix for "10e, xs" etc on when the phone returned is one of those models
+	for char in charSuffixes:
+		if phoneName[-1] != char and (phoneName + c) in nameString:
+			result += suffix
+	# Ditto for word suffixes
+	for suffix in phoneSuffixes:
+		if not suffix in phoneName and suffix in nameString:
+			result += " " + suffix
+
+	# Now try to see if storage capacity is avaiable 
+	try:
+		print("nameString",nameString)
+		chunks = list(map(lambda s : s.strip().strip("|").lower(),nameString.split(" ")))
+		result += " " + list(filter(lambda s : "gb" in s, chunks))[0]
+		return result
+	except IndexError as e:
+		return result
+
+		
